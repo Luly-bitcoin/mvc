@@ -2,13 +2,13 @@
 
 Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 
-## 👥 Integrantes
+## Integrantes
 
 - Lourdes Villegas - villegasmarialuly@gmail.com - https://github.com/Luly-bitcoin
 - Milena Miselli - milivicmp@gmail.com - https://github.com/milemise
 - Luna Lopardo - Correo - Git
 
-## 🛠 Tecnologías
+## Tecnologías
 
 - ASP.NET MVC
 - C#
@@ -18,11 +18,11 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 - CSS
 - Bootstrap
 
-## 📐 Modelado de Datos
+## Modelado de Datos
 
 ![DER](./docs/DER.png)
 
-## 🗄 Base de Datos
+## Base de Datos
 
 ### Crear la base de datos
 
@@ -31,7 +31,7 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 3. Verificar que se haya creado la base de datos.
 4. Configurar la cadena de conexión del proyecto.
 
-## ▶️ Ejecución
+## Ejecución
 
 1. Clonar el repositorio.
 2. Abrir la solución en Visual Studio.
@@ -39,7 +39,7 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 4. Configurar la conexión a la base de datos.
 5. Ejecutar el proyecto.
 
-## 📋 Primera entrega
+## Primera entrega
 
 - ABM de Propietarios
 - ABM de Inquilinos

@@ -4,118 +4,289 @@
 
 <div class="home">
 
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-content">
-            <span class="hero-tag">INMOBILIARIA</span>
 
-            <h1>Gestión de alquileres temporarios</h1>
+        <div class="hero-content">
+
+            <span class="hero-tag">
+                ALQUILERES TEMPORARIOS
+            </span>
+
+            <h1>
+                Encontrá un lugar donde
+                <span>te quieras quedar.</span>
+            </h1>
 
             <p>
-                Administrá propietarios, inquilinos y propiedades
-                de manera sencilla desde un solo lugar.
+                Descubrí inmuebles para alquiler temporario
+                y encontrá el lugar ideal para tu próxima estadía.
             </p>
 
-            <div class="hero-buttons">
-                <a asp-controller="Propietarios"
+
+            <!-- BUSCADOR -->
+
+            <div class="search-box">
+
+                <div class="search-field">
+
+                    <span class="search-icon">📍</span>
+
+                    <div>
+                        <label>Ubicación</label>
+                        <span>¿Dónde querés ir?</span>
+                    </div>
+
+                </div>
+
+
+                <div class="search-field">
+
+                    <span class="search-icon">📅</span>
+
+                    <div>
+                        <label>Fechas</label>
+                        <span>Elegí tus fechas</span>
+                    </div>
+
+                </div>
+
+
+                <div class="search-field">
+
+                    <span class="search-icon">👥</span>
+
+                    <div>
+                        <label>Personas</label>
+                        <span>¿Cuántos son?</span>
+                    </div>
+
+                </div>
+
+
+                <a asp-controller="Inmuebles"
                    asp-action="Index"
-                   class="btn btn-primary">
-                    Propietarios
+                   class="search-button">
+
+                    Buscar
+
                 </a>
 
-                <a asp-controller="Inquilinos"
-                   asp-action="Index"
-                   class="btn btn-outline-primary">
-                    Inquilinos
-                </a>
             </div>
+
         </div>
+
     </section>
 
 
-    <section class="features">
+    <!-- CATEGORÍAS -->
+
+    <section class="categories">
 
         <div class="section-title">
-            <span>GESTIÓN</span>
-            <h2>Administrá tu inmobiliaria</h2>
+
+            <span>EXPLORÁ</span>
+
+            <h2>
+                Encontrá el lugar ideal
+            </h2>
+
             <p>
-                Accedé rápidamente a las principales funciones del sistema.
+                Elegí entre diferentes tipos de inmuebles
+                para tu próxima estadía.
             </p>
+
         </div>
 
-        <div class="feature-grid">
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    👤
+        <div class="category-grid">
+
+            <a class="category-card"
+               asp-controller="Inmuebles"
+               asp-action="Index">
+
+                <div class="category-image house">
+                    <img src="~/images/casa.jpg" alt="Casa">
                 </div>
 
-                <h3>Propietarios</h3>
+                <div class="category-info">
+
+                    <h3>Casas</h3>
+
+                    <p>
+                        Espacios cómodos para disfrutar
+                        con familia o amigos.
+                    </p>
+
+                    <span>
+                        Ver casas →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <a class="category-card"
+               asp-controller="Inmuebles"
+               asp-action="Index">
+
+                <div class="category-image apartment">
+                    <img src="~/images/departamento.jpg" alt="Departamento">
+                </div>
+
+                <div class="category-info">
+
+                    <h3>Departamentos</h3>
+
+                    <p>
+                        Opciones prácticas para estadías
+                        cortas o prolongadas.
+                    </p>
+
+                    <span>
+                        Ver departamentos →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <a class="category-card"
+               asp-controller="Inmuebles"
+               asp-action="Index">
+
+                <div class="category-image weekend">
+                    <img src="~/images/escapada.jpg" alt="Escapada">
+                </div>
+
+                <div class="category-info">
+
+                    <h3>Escapadas</h3>
+
+                    <p>
+                        Lugares pensados para desconectarte
+                        y disfrutar.
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- BENEFICIOS -->
+
+    <section class="benefits">
+
+        <div class="section-title">
+
+            <span>¿POR QUÉ ELEGIRNOS?</span>
+
+            <h2>
+                Alquilar puede ser simple
+            </h2>
+
+        </div>
+
+
+        <div class="benefits-grid">
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    Encontrá fácilmente
+                </h3>
 
                 <p>
-                    Registrá y administrá la información de los propietarios
-                    de los inmuebles.
+                    Explorá las opciones disponibles
+                    y encontrá un inmueble que se adapte
+                    a lo que necesitás.
                 </p>
 
-                <a asp-controller="Propietarios"
-                   asp-action="Index">
-                    Ver propietarios →
-                </a>
             </div>
 
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    🏠
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    💬
                 </div>
 
-                <h3>Inmuebles</h3>
+                <h3>
+                    Consultá directamente
+                </h3>
 
                 <p>
-                    Gestioná las propiedades ofrecidas para alquiler
-                    temporario.
+                    Ponete en contacto para consultar
+                    disponibilidad y condiciones.
                 </p>
 
-                <span class="coming-soon">
-                    Próximamente
-                </span>
             </div>
 
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    👥
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    🛡️
                 </div>
 
-                <h3>Inquilinos</h3>
+                <h3>
+                    Gestión organizada
+                </h3>
 
                 <p>
-                    Administrá los datos personales y de contacto
-                    de los inquilinos.
+                    Toda la información de propietarios,
+                    inquilinos y reservas organizada
+                    en un solo lugar.
                 </p>
 
-                <a asp-controller="Inquilinos"
-                   asp-action="Index">
-                    Ver inquilinos →
-                </a>
             </div>
 
+        </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">
-                    📅
-                </div>
+    </section>
 
-                <h3>Reservas</h3>
 
-                <p>
-                    Consultá y gestioná las reservas de alquiler
-                    temporario.
-                </p>
+    <!-- PROPIETARIOS -->
 
-                <span class="coming-soon">
-                    Próximamente
-                </span>
-            </div>
+    <section class="owner-section">
+
+        <div class="owner-content">
+
+            <span>
+                PARA PROPIETARIOS
+            </span>
+
+            <h2>
+                ¿Tenés un inmueble?
+            </h2>
+
+            <p>
+                Administrá tus propiedades, inquilinos y
+                alquileres desde un solo lugar, de manera
+                rápida y sencilla.
+            </p>
+
+            <a asp-controller="Propietarios"
+               asp-action="Index"
+               class="owner-button">
+
+                Administrar mis propiedades →
+
+            </a>
 
         </div>
 
