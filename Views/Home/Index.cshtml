@@ -1,8 +1,124 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home">
+
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">INMOBILIARIA</span>
+
+            <h1>Gestión de alquileres temporarios</h1>
+
+            <p>
+                Administrá propietarios, inquilinos y propiedades
+                de manera sencilla desde un solo lugar.
+            </p>
+
+            <div class="hero-buttons">
+                <a asp-controller="Propietarios"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Propietarios
+                </a>
+
+                <a asp-controller="Inquilinos"
+                   asp-action="Index"
+                   class="btn btn-outline-primary">
+                    Inquilinos
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="features">
+
+        <div class="section-title">
+            <span>GESTIÓN</span>
+            <h2>Administrá tu inmobiliaria</h2>
+            <p>
+                Accedé rápidamente a las principales funciones del sistema.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    👤
+                </div>
+
+                <h3>Propietarios</h3>
+
+                <p>
+                    Registrá y administrá la información de los propietarios
+                    de los inmuebles.
+                </p>
+
+                <a asp-controller="Propietarios"
+                   asp-action="Index">
+                    Ver propietarios →
+                </a>
+            </div>
+
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    🏠
+                </div>
+
+                <h3>Inmuebles</h3>
+
+                <p>
+                    Gestioná las propiedades ofrecidas para alquiler
+                    temporario.
+                </p>
+
+                <span class="coming-soon">
+                    Próximamente
+                </span>
+            </div>
+
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    👥
+                </div>
+
+                <h3>Inquilinos</h3>
+
+                <p>
+                    Administrá los datos personales y de contacto
+                    de los inquilinos.
+                </p>
+
+                <a asp-controller="Inquilinos"
+                   asp-action="Index">
+                    Ver inquilinos →
+                </a>
+            </div>
+
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    📅
+                </div>
+
+                <h3>Reservas</h3>
+
+                <p>
+                    Consultá y gestioná las reservas de alquiler
+                    temporario.
+                </p>
+
+                <span class="coming-soon">
+                    Próximamente
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
