@@ -6,6 +6,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: #321D15;
 }
 
 main {
@@ -24,6 +25,7 @@ main {
 
 .home {
     background: #ffffff;
+    border-radius: 30px;
 }
 
 
@@ -33,8 +35,9 @@ main {
 
 .hero {
     padding: 90px 20px 100px;
-    background: linear-gradient(135deg, #f4f8ff 0%, #ffffff 70%);
+    background: #EBB56F;
     text-align: center;
+    border-radius: 30px;
 }
 
 .hero-content {
@@ -44,7 +47,7 @@ main {
 
 .hero-tag {
     display: inline-block;
-    color: #0d6efd;
+    color: #6e3320;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -57,17 +60,19 @@ main {
     font-size: 52px;
     line-height: 1.1;
     font-weight: 700;
-    color: #1f2937;
+    color: #472115;
 }
 
 .hero h1 span {
-    color: #0d6efd;
+    color: #472115;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 
 .hero p {
     max-width: 650px;
     margin: 22px auto 35px;
-    color: #6b7280;
+    color: #212529;
     font-size: 18px;
     line-height: 1.7;
 }
@@ -135,7 +140,7 @@ main {
 
     padding: 16px 28px;
 
-    background: #0d6efd;
+    background: #606838;
     color: white;
 
     border-radius: 11px;
@@ -147,7 +152,7 @@ main {
 }
 
 .search-button:hover {
-    background: #0b5ed7;
+    background: #414525;
     color: white;
     transform: translateY(-1px);
 }
@@ -164,7 +169,7 @@ main {
 }
 
 .section-title span {
-    color: #0d6efd;
+    color: #6e3320;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -262,7 +267,7 @@ main {
 }
 
 .category-info span {
-    color: #0d6efd;
+    color: #DC7731;
     font-weight: 600;
 }
 
@@ -333,7 +338,7 @@ main {
 
     border-radius: 22px;
 
-    background: #0d6efd;
+    background: #8e2200;
 }
 
 .owner-content {
@@ -372,7 +377,7 @@ main {
     padding: 13px 22px;
 
     background: white;
-    color: #0d6efd;
+    color: #DC7731;
 
     border-radius: 10px;
 
@@ -388,7 +393,7 @@ main {
 
     background: #f8fafc;
 
-    color: #0d6efd;
+    color: #ff791a;
 }
 
 
@@ -535,3 +540,608 @@ main {
     }
 
 }
+
+/* =========================================================
+   INQUILINOS / PROPIETARIOS
+   ========================================================= */
+
+.management-page {
+    padding: 35px 0 70px;
+}
+
+
+/* -------------------------
+   ENCABEZADO
+   ------------------------- */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.page-label {
+    display: block;
+    color: #66869a;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.page-header h1 {
+    color: #ff791a;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.page-header p {
+    color: #71808b;
+    margin: 0;
+    font-size: 1rem;
+}
+
+
+/* -------------------------
+   BOTÓN PRINCIPAL
+   ------------------------- */
+
+.btn-primary-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    background: #606838;
+    color: white;
+
+    padding: 12px 20px;
+    border-radius: 9px;
+
+    text-decoration: none;
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+
+    white-space: nowrap;
+}
+
+.btn-primary-custom:hover {
+    background: #414525;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+
+/* -------------------------
+   TARJETA
+   ------------------------- */
+
+.data-card {
+    background: #ffffff;
+    border: 1px solid #e1e6e9;
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(40, 55, 65, 0.06);
+
+    overflow: hidden;
+}
+
+
+/* -------------------------
+   CABECERA TARJETA
+   ------------------------- */
+
+.data-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 24px 28px;
+
+    border-bottom: 1px solid #e8ecef;
+}
+
+.data-card-header h2 {
+    color: #2d3e4c;
+    font-size: 1.2rem;
+    font-weight: 650;
+
+    margin: 0 0 5px;
+}
+
+.data-count {
+    color: #89959d;
+    font-size: 0.85rem;
+}
+
+
+/* -------------------------
+   BUSCADOR
+   ------------------------- */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    border: 1px solid #dce2e5;
+    border-radius: 8px;
+
+    padding: 8px 12px;
+
+    background: #fafbfb;
+}
+
+.search-box span {
+    color: #7b8d99;
+    font-size: 1.1rem;
+}
+
+.search-box input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #334754;
+    font-size: 0.9rem;
+}
+
+.search-box input::placeholder {
+    color: #9ba5ab;
+}
+
+
+/* -------------------------
+   TABLA
+   ------------------------- */
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table thead {
+    background: #f4f6f7;
+}
+
+.custom-table th {
+    color: #667680;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+
+    padding: 15px 25px;
+
+    border-bottom: 1px solid #e2e7e9;
+}
+
+.custom-table td {
+    color: #43535e;
+
+    font-size: 0.92rem;
+
+    padding: 17px 25px;
+
+    border-bottom: 1px solid #edf0f2;
+}
+
+.custom-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.custom-table tbody tr:hover {
+    background: #f7f9fa;
+}
+
+.custom-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* -------------------------
+   PERSONA
+   ------------------------- */
+
+.person-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-weight: 600;
+    color: #30424f;
+}
+
+.person-avatar {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dce7ec;
+    color: #557487;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+
+/* -------------------------
+   ACCIONES
+   ------------------------- */
+
+.actions-column {
+    text-align: right;
+}
+
+.actions {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.action-btn {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    margin-left: 4px;
+
+    border-radius: 6px;
+
+    font-size: 0.78rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all 0.15s ease;
+}
+
+.action-btn.view {
+    color: #557487;
+    background: #edf3f6;
+}
+
+.action-btn.view:hover {
+    background: #dce8ed;
+    color: #405e70;
+}
+
+.action-btn.edit {
+    color: #6b7479;
+    background: #f0f1f2;
+}
+
+.action-btn.edit:hover {
+    background: #e3e5e6;
+    color: #414b50;
+}
+
+.action-btn.delete {
+    color: #9a6666;
+    background: #f7eeee;
+}
+
+.action-btn.delete:hover {
+    background: #f1dddd;
+    color: #804e4e;
+}
+
+
+/* -------------------------
+   FOOTER TABLA
+   ------------------------- */
+
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 25px;
+
+    border-top: 1px solid #e8ecef;
+
+    color: #8a969d;
+    font-size: 0.82rem;
+}
+
+.pagination-custom {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination-custom button {
+    border: 1px solid #dce3e7;
+
+    background: white;
+
+    color: #667b88;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.pagination-custom .pagination-active {
+    background: #66869a;
+    border-color: #66869a;
+    color: white;
+}
+
+
+/* -------------------------
+   RESPONSIVE
+   ------------------------- */
+
+@media (max-width: 768px) {
+
+    .management-page {
+        padding-top: 20px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .data-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .custom-table {
+        min-width: 800px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar-custom {
+    background: #6A2A16;
+    padding: 14px 0;
+}
+
+.navbar-logo {
+    color: #ffffff !important;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+}
+
+.navbar-custom .nav-link {
+    color: #edff76 !important;
+    font-weight: 500;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #edff76 !important;
+}
+
+
+/* =========================================================
+   EDITAR INQUILINO
+   ========================================================= */
+
+.edit-card {
+    max-width: 850px;
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e6e9;
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(40, 55, 65, 0.06);
+
+    overflow: hidden;
+}
+
+
+/* -------------------------
+   CABECERA
+   ------------------------- */
+
+.edit-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 25px 30px;
+
+    border-bottom: 1px solid #e8ecef;
+}
+
+.edit-avatar {
+    width: 50px;
+    height: 50px;
+
+    background: #dce7ec;
+    color: #557487;
+
+    font-size: 0.9rem;
+}
+
+.edit-card-header h2 {
+    margin: 0 0 4px;
+
+    color: #2d3e4c;
+
+    font-size: 1.3rem;
+}
+
+.edit-card-header span {
+    color: #89959d;
+    font-size: 0.85rem;
+}
+
+
+/* -------------------------
+   FORMULARIO
+   ------------------------- */
+
+.edit-card form {
+    padding: 30px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #43535e;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #dce2e5;
+    border-radius: 8px;
+
+    background: #fafbfb;
+
+    color: #334754;
+
+    font-size: 0.9rem;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #66869a;
+
+    background: white;
+
+    box-shadow: 0 0 0 3px rgba(102, 134, 154, 0.10);
+}
+
+.form-group input::placeholder {
+    color: #9ba5ab;
+}
+
+
+/* -------------------------
+   BOTONES
+   ------------------------- */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 30px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid #e8ecef;
+}
+
+.btn-cancel {
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    background: #f0f1f2;
+
+    color: #667680;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #e3e5e6;
+
+    color: #414b50;
+}
+
+
+/* -------------------------
+   RESPONSIVE
+   ------------------------- */
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-card form {
+        padding: 22px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .form-actions a,
+    .form-actions button {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+}
+
