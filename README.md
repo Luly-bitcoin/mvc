@@ -6,7 +6,6 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 
 - Lourdes Villegas - villegasmarialuly@gmail.com - https://github.com/Luly-bitcoin
 - Milena Miselli - milivicmp@gmail.com - https://github.com/milemise
-- Luna Lopardo - luna.lopardo@gmail.com - https://github.com/lunalopardo
 
 ## Tecnologías
 
