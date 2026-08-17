@@ -1,0 +1,270 @@
+@{
+    ViewData["Title"] = "propietarios";
+}
+<div class="management-page">
+
+    <!-- ENCABEZADO -->
+    <div class="page-header">
+
+        <div>
+
+            <h1>GESTIÓN DE PROPIETARIOS</h1>
+
+        </div>
+
+        <a asp-action="Create" class="btn-primary-custom">
+            <span class="btn-icon">+</span>
+            Agregar propietario
+        </a>
+
+    </div>
+
+
+    <!-- TARJETA PRINCIPAL -->
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+                <h2>Lista de propietarios</h2>
+                <span class="data-count">4 propietarios registrados</span>
+            </div>
+
+            <div class="search-box">
+                <span>⌕</span>
+                <input type="text" placeholder="Buscar propietario..." />
+            </div>
+
+        </div>
+
+
+        <!-- TABLA -->
+        <div class="table-responsive">
+
+            <table class="custom-table">
+
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th class="actions-column">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!-- DATOS DE PRUEBA -->
+
+                    <tr class="clickable-row">
+
+                        <td>
+                            <div class="person-cell">
+                                <div class="person-avatar">
+                                    ML
+                                </div>
+
+                                <span>María</span>
+                            </div>
+                        </td>
+
+                        <td>Gómez</td>
+
+                        <td>38.456.789</td>
+
+                        <td>
+                            maria.gomez@email.com
+                        </td>
+
+                        <td>1234-5678</td>
+
+                        <td class="actions">
+
+                            <a asp-action="Details"
+                               asp-route-id="1"
+                               class="action-btn view"
+                               title="Ver detalles">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="1"
+                               class="action-btn edit"
+                               title="Editar">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="1"
+                               class="action-btn delete"
+                               title="Eliminar">
+                                Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr class="clickable-row">
+
+                        <td>
+                            <div class="person-cell">
+                                <div class="person-avatar">
+                                    JP
+                                </div>
+
+                                <span>Juan</span>
+                            </div>
+                        </td>
+
+                        <td>Pérez</td>
+
+                        <td>34.782.123</td>
+
+                        <td>
+                            juan.perez@email.com
+                        </td>
+                        <td>9876-5432</td>
+
+                        <td class="actions">
+
+                            <a asp-action="Details"
+                               asp-route-id="2"
+                               class="action-btn view">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="2"
+                               class="action-btn edit">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="2"
+                               class="action-btn delete">
+                                Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr class="clickable-row">
+
+                        <td>
+                            <div class="person-cell">
+                                <div class="person-avatar">
+                                    LC
+                                </div>
+
+                                <span>Lucía</span>
+                            </div>
+                        </td>
+
+                        <td>Castro</td>
+
+                        <td>41.256.987</td>
+
+                        <td>
+                            lucia.castro@email.com
+                        </td>
+                        <td>1234-5678</td>
+
+                        <td class="actions">
+
+                            <a asp-action="Details"
+                               asp-route-id="3"
+                               class="action-btn view">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="3"
+                               class="action-btn edit">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="3"
+                               class="action-btn delete">
+                                Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr class="clickable-row">
+
+                        <td>
+                            <div class="person-cell">
+                                <div class="person-avatar">
+                                    DM
+                                </div>
+
+                                <span>Diego</span>
+                            </div>
+                        </td>
+
+                        <td>Martínez</td>
+
+                        <td>36.654.321</td>
+
+                        <td>
+                            diego.martinez@email.com
+                        </td>
+                        <td>1234-5678</td>
+
+                        <td class="actions">
+
+                            <a asp-action="Details"
+                               asp-route-id="4"
+                               class="action-btn view">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="4"
+                               class="action-btn edit">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="4"
+                               class="action-btn delete">
+                                Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- PIE DE TABLA -->
+        <div class="table-footer">
+
+            <span>
+                Mostrando 4 propietarios
+            </span>
+
+            <div class="pagination-custom">
+                <button class="pagination-active">1</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

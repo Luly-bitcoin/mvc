@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = "Editar propietario";
+}
+
+<div class="management-page">
+
+    <!-- ENCABEZADO -->
+    <div class="page-header">
+
+        <div>
+            <h1>EDITAR PROPIETARIO</h1>
+        </div>
+
+    </div>
+
+
+    <!-- TARJETA DE EDICIÓN -->
+    <div class="edit-card">
+
+        <div class="edit-card-header">
+            <div class="person-avatar edit-avatar">
+                ML
+            </div>
+
+            <div>
+                <h2>Editar información</h2>
+                <span>Modificá los datos del propietario</span>
+            </div>
+        </div>
+
+
+        <!-- FORMULARIO -->
+        <form>
+
+            <div class="form-grid">
+
+                <!-- NOMBRE -->
+                <div class="form-group">
+                    <label for="Nombre">Nombre</label>
+
+                    <input type="text"
+                           id="Nombre"
+                           name="Nombre"
+                           value="María"
+                           placeholder="Ingrese el nombre" />
+                </div>
+
+
+                <!-- APELLIDO -->
+                <div class="form-group">
+                    <label for="Apellido">Apellido</label>
+
+                    <input type="text"
+                           id="Apellido"
+                           name="Apellido"
+                           value="Gómez"
+                           placeholder="Ingrese el apellido" />
+                </div>
+
+
+                <!-- DNI -->
+                <div class="form-group">
+                    <label for="Dni">DNI</label>
+
+                    <input type="text"
+                           id="Dni"
+                           name="Dni"
+                           value="38.456.789"
+                           placeholder="Ingrese el DNI" />
+                </div>
+
+
+                <!-- CORREO -->
+                <div class="form-group">
+                    <label for="Email">Correo electrónico</label>
+
+                    <input type="email"
+                           id="Email"
+                           name="Email"
+                           value="maria.gomez@email.com"
+                           placeholder="Ingrese el correo electrónico" />
+                </div>
+
+                <!-- TELEFONO -->
+                <div class="form-group">
+                    <label for="Telefono">Teléfono</label>
+
+                    <input type="text"
+                           id="Telefono"
+                           name="Telefono"
+                           value="1234-5678"
+                           placeholder="Ingrese el teléfono" />
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="btn-cancel">
+                    Cancelar
+                </a>
+
+                <button type="submit"
+                        class="btn-primary-custom">
+                    Guardar cambios
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+```

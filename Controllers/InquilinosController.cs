@@ -24,9 +24,5 @@ namespace mvc.Controllers
             return View();
         }
 
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
     }
 }

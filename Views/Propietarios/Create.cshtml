@@ -1,0 +1,150 @@
+@{
+    ViewData["Title"] = "Agregar Inquilino";
+}
+
+<div class="management-page">
+
+    <!-- ENCABEZADO -->
+
+    <div class="page-header">
+
+        <div>
+            <h1>AGREGAR PROPIETARIO</h1>
+        </div>
+
+    </div>
+
+
+    <!-- TARJETA -->
+
+    <div class="edit-card">
+
+        <!-- CABECERA -->
+
+        <div class="edit-card-header">
+
+            <div class="edit-avatar">
+                +
+            </div>
+
+            <div>
+                <h2>Nuevo propietario</h2>
+
+                <span>
+                    Completá los datos de la persona
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form>
+
+            <div class="form-grid">
+
+                <!-- NOMBRE -->
+
+                <div class="form-group">
+
+                    <label for="nombre">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           id="nombre"
+                           name="nombre"
+                           placeholder="Ej: María" />
+
+                </div>
+
+
+                <!-- APELLIDO -->
+
+                <div class="form-group">
+
+                    <label for="apellido">
+                        Apellido
+                    </label>
+
+                    <input type="text"
+                           id="apellido"
+                           name="apellido"
+                           placeholder="Ej: Gómez" />
+
+                </div>
+
+
+                <!-- DNI -->
+
+                <div class="form-group">
+
+                    <label for="dni">
+                        DNI
+                    </label>
+
+                    <input type="text"
+                           id="dni"
+                           name="dni"
+                           placeholder="Ej: 38.456.789" />
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           placeholder="Ej: maria@email.com" />
+
+                </div>
+
+
+                <!-- TELÉFONO -->
+
+                <div class="form-group">
+
+                    <label for="telefono">
+                        Teléfono
+                    </label>
+
+                    <input type="tel"
+                           id="telefono"
+                           name="telefono"
+                           placeholder="Ej: 266 4567890" />
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="btn-cancel">
+                    Cancelar
+                </a>
+
+                <button type="button"
+                        class="btn-primary-custom">
+                    <span class="btn-icon">✓</span>
+                    Guardar propietario
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
