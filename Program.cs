@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<mvc.Repositories.IRepositorioPropietario, mvc.Repositories.RepositorioPropietario>();
+builder.Services.AddScoped<mvc.Repositories.IRepositorioInquilino, mvc.Repositories.RepositorioInquilino>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

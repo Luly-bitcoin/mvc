@@ -1,101 +1,142 @@
+@model mvc.Models.Inquilino
 @{
-    ViewData["Title"] = "Editar Inquilino";
+    ViewData["Title"] = "Editar inquilino";
+
+    string iniciales = "";
+
+    if (!string.IsNullOrEmpty(Model?.Nombre))
+        iniciales += Model.Nombre[0];
+
+    if (!string.IsNullOrEmpty(Model?.Apellido))
+        iniciales += Model.Apellido[0];
 }
 
 <div class="management-page">
 
-    <!-- ENCABEZADO -->
     <div class="page-header">
-
         <div>
             <h1>EDITAR INQUILINO</h1>
         </div>
-
     </div>
 
-
-    <!-- TARJETA DE EDICIÓN -->
     <div class="edit-card">
 
         <div class="edit-card-header">
+
             <div class="person-avatar edit-avatar">
-                ML
+                @iniciales.ToUpper()
             </div>
 
             <div>
                 <h2>Editar información</h2>
                 <span>Modificá los datos del inquilino</span>
             </div>
+
         </div>
 
 
-        <!-- FORMULARIO -->
-        <form>
+        <form asp-action="Edit" method="post">
+
+            <input type="hidden" asp-for="Id" />
 
             <div class="form-grid">
 
-                <!-- NOMBRE -->
                 <div class="form-group">
-                    <label for="Nombre">Nombre</label>
 
-                    <input type="text"
-                           id="Nombre"
-                           name="Nombre"
-                           value="María"
-                           placeholder="Ingrese el nombre" />
+                    <label asp-for="Nombre">
+                        Nombre
+                    </label>
+
+                    <input asp-for="Nombre"
+                           placeholder="Ingrese el nombre"
+                           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
+                           title="Solo se permiten letras"
+                           required />
+
+                    <span asp-validation-for="Nombre"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
 
-                <!-- APELLIDO -->
                 <div class="form-group">
-                    <label for="Apellido">Apellido</label>
 
-                    <input type="text"
-                           id="Apellido"
-                           name="Apellido"
-                           value="Gómez"
-                           placeholder="Ingrese el apellido" />
+                    <label asp-for="Apellido">
+                        Apellido
+                    </label>
+
+                    <input asp-for="Apellido"
+                           placeholder="Ingrese el apellido"
+                           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
+                           title="Solo se permiten letras"
+                           required />
+
+                    <span asp-validation-for="Apellido"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
 
-                <!-- DNI -->
                 <div class="form-group">
-                    <label for="Dni">DNI</label>
 
-                    <input type="text"
-                           id="Dni"
-                           name="Dni"
-                           value="38.456.789"
-                           placeholder="Ingrese el DNI" />
+                    <label asp-for="Dni">
+                        DNI
+                    </label>
+
+                    <input asp-for="Dni"
+                           type="text"
+                           placeholder="Ingrese el DNI"
+                           maxlength="8"
+                           minlength="7"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                           required />
+
+                    <span asp-validation-for="Dni"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
 
-                <!-- CORREO -->
                 <div class="form-group">
-                    <label for="Email">Correo electrónico</label>
 
-                    <input type="email"
-                           id="Email"
-                           name="Email"
-                           value="maria.gomez@email.com"
+                    <label asp-for="Email">
+                        Correo electrónico
+                    </label>
+
+                    <input asp-for="Email"
+                           type="email"
                            placeholder="Ingrese el correo electrónico" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
-                <!-- TELEFONO -->
-                <div class="form-group">
-                    <label for="Telefono">Teléfono</label>
 
-                    <input type="text"
-                           id="Telefono"
-                           name="Telefono"
-                           value="1234-5678"
-                           placeholder="Ingrese el teléfono" />
+                <div class="form-group">
+
+                    <label asp-for="Telefono">
+                        Teléfono
+                    </label>
+
+                    <input asp-for="Telefono"
+                           type="tel"
+                           placeholder="Ingrese el teléfono"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+                    <span asp-validation-for="Telefono"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
             </div>
 
 
-            <!-- BOTONES -->
             <div class="form-actions">
 
                 <a asp-action="Index"
@@ -115,4 +156,3 @@
     </div>
 
 </div>
-```

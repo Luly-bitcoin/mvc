@@ -26,7 +26,7 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 ### Crear la base de datos
 
 1. Abrir el gestor de base de datos.
-2. Ejecutar el archivo `database.sql`.
+2. Ejecutar el archivo `alquileres_temporarios.sql`.
 3. Verificar que se haya creado la base de datos.
 4. Configurar la cadena de conexión del proyecto.
 

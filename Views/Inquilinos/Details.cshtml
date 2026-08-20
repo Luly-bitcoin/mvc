@@ -1,0 +1,373 @@
+@model mvc.Models.Inquilino
+
+@{
+    ViewData["Title"] = "Detalle del inquilino";
+
+    string iniciales = "";
+
+    if (!string.IsNullOrEmpty(Model.Nombre))
+        iniciales += Model.Nombre[0];
+
+    if (!string.IsNullOrEmpty(Model.Apellido))
+        iniciales += Model.Apellido[0];
+}
+
+<div class="management-page">
+
+    <div class="details-back">
+        <a asp-action="Index" class="btn-cancel">
+            ← Volver a inquilinos
+        </a>
+    </div>
+
+
+    <div class="data-card">
+
+        <div class="details-top">
+
+            <div>
+
+                <div class="edit-card-header">
+
+                    <div class="edit-avatar">
+                        @iniciales.ToUpper()
+                    </div>
+
+                    <div>
+                        <h2>
+                            @Model.Nombre @Model.Apellido
+                        </h2>
+
+                        <span>
+                            Inquilino · DNI @Model.Dni
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="details-person-data">
+
+                    <div class="details-person-grid">
+
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <div>@Model.Nombre</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Apellido</label>
+                            <div>@Model.Apellido</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>DNI</label>
+                            <div>@Model.Dni</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <div>@Model.Telefono</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div>@Model.Email</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="details-summary">
+
+                <div class="details-summary-header">
+
+                    <h2>Resumen</h2>
+
+                    <span class="data-count">
+                        Actividad del inquilino
+                    </span>
+
+                </div>
+
+
+                <div class="details-summary-grid">
+
+                    <div class="details-summary-item">
+                        <strong>3</strong>
+                        <span>Alquileres</span>
+                    </div>
+
+                    <div class="details-summary-item">
+                        <strong>1</strong>
+                        <span>Alquiler actual</span>
+                    </div>
+
+                    <div class="details-summary-item">
+                        <strong>2</strong>
+                        <span>Finalizados</span>
+                    </div>
+
+                    <div class="details-summary-item">
+                        <strong>12</strong>
+                        <span>Pagos realizados</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="details-history">
+
+        <div class="page-header">
+
+            <div>
+                <h1>HISTORIAL DE ALQUILERES</h1>
+            </div>
+
+        </div>
+
+
+        <div class="data-card history-year">
+
+            <div class="data-card-header">
+
+                <div>
+                    <h2>2026</h2>
+
+                    <span class="data-count">
+                        Alquiler actual
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="history-event">
+
+                <div class="history-date">
+                    AGOSTO 2026
+                </div>
+
+
+                <div class="property-event">
+
+                    <div class="property-event-header">
+
+                        <div>
+
+                            <h3>
+                                Departamento Centro
+                            </h3>
+
+                            <span>
+                                Calle Belgrano 742
+                            </span>
+
+                        </div>
+
+
+                        <span class="status-badge status-rented">
+                            ALQUILER ACTUAL
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-event-details">
+
+                        <div>
+                            <small>PROPIETARIO</small>
+
+                            <div>
+                                Carlos Rodríguez
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>ALQUILER MENSUAL</small>
+
+                            <div>
+                                $350.000
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>ESTADO DEL PAGO</small>
+
+                            <div class="payment-ok">
+                                ✓ Pago
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="history-event history-event-last">
+
+                <div class="history-date">
+                    ENERO 2026
+                </div>
+
+
+                <div class="property-event">
+
+                    <div class="property-event-header">
+
+                        <div>
+
+                            <h3>
+                                Casa Barrio Norte
+                            </h3>
+
+                            <span>
+                                Calle Mitre 456
+                            </span>
+
+                        </div>
+
+
+                        <span class="status-badge status-available">
+                            FINALIZADO
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-event-details">
+
+                        <div>
+                            <small>PROPIETARIO</small>
+
+                            <div>
+                                María González
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>ALQUILER MENSUAL</small>
+
+                            <div>
+                                $280.000
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>PERÍODO</small>
+
+                            <div>
+                                Enero 2025 - Enero 2026
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="data-card history-year">
+
+            <div class="data-card-header">
+
+                <div>
+                    <h2>2025</h2>
+
+                    <span class="data-count">
+                        Historial anterior
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="history-event history-event-last">
+
+                <div class="history-date">
+                    MARZO 2025
+                </div>
+
+
+                <div class="property-event">
+
+                    <div class="property-event-header">
+
+                        <div>
+
+                            <h3>
+                                Departamento San Luis
+                            </h3>
+
+                            <span>
+                                Avenida Illia 1250
+                            </span>
+
+                        </div>
+
+
+                        <span class="status-badge status-available">
+                            FINALIZADO
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-event-details">
+
+                        <div>
+                            <small>PROPIETARIO</small>
+
+                            <div>
+                                Roberto Fernández
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>ALQUILER MENSUAL</small>
+
+                            <div>
+                                $220.000
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <small>ESTADO</small>
+
+                            <div class="payment-ok">
+                                ✓ Finalizado
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

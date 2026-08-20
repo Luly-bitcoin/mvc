@@ -19,19 +19,11 @@ main {
     border-top: 1px solid #ddd;
     background-color: white;
 }
-/* =========================
-   HOME
-   ========================= */
 
 .home {
     background: #ffffff;
     border-radius: 30px;
 }
-
-
-/* =========================
-   HERO
-   ========================= */
 
 .hero {
     padding: 90px 20px 100px;
@@ -76,12 +68,6 @@ main {
     font-size: 18px;
     line-height: 1.7;
 }
-
-
-/* =========================
-   SEARCH
-   ========================= */
-
 .search-box {
     max-width: 950px;
     margin: 0 auto;
@@ -157,11 +143,6 @@ main {
     transform: translateY(-1px);
 }
 
-
-/* =========================
-   SECTION TITLE
-   ========================= */
-
 .section-title {
     text-align: center;
     max-width: 650px;
@@ -186,10 +167,6 @@ main {
     line-height: 1.6;
 }
 
-
-/* =========================
-   CATEGORIES
-   ========================= */
 
 .categories {
     max-width: 1150px;
@@ -271,11 +248,6 @@ main {
     font-weight: 600;
 }
 
-
-/* =========================
-   BENEFITS
-   ========================= */
-
 .benefits {
     padding: 80px 20px;
 
@@ -324,11 +296,6 @@ main {
     color: #6b7280;
     line-height: 1.6;
 }
-
-
-/* =========================
-   OWNER SECTION
-   ========================= */
 
 .owner-section {
     max-width: 1150px;
@@ -396,11 +363,6 @@ main {
     color: #ff791a;
 }
 
-
-/* =========================
-   RESPONSIVE
-   ========================= */
-
 @media (max-width: 900px) {
 
     .hero h1 {
@@ -456,9 +418,6 @@ main {
     }
 
 }
-/* =========================
-   PRIVACY
-   ========================= */
 
 .privacy-page {
     max-width: 900px;
@@ -512,11 +471,6 @@ main {
     line-height: 1.7;
 }
 
-
-/* =========================
-   RESPONSIVE
-   ========================= */
-
 @media (max-width: 900px) {
 
     .feature-grid {
@@ -540,19 +494,10 @@ main {
     }
 
 }
-/* =========================================================
-   INMOBILIARIA
-   GESTIÓN DE INQUILINOS / PROPIETARIOS
-   ========================================================= */
 
 .management-page {
     padding: 55px 0 80px;
 }
-
-
-/* =========================================================
-   ENCABEZADO
-   ========================================================= */
 
 .page-header {
     display: flex;
@@ -574,8 +519,6 @@ main {
     padding-left: 18px;
 }
 
-/* pequeña línea decorativa */
-
 .page-header h1::before {
     content: "";
 
@@ -589,11 +532,6 @@ main {
     background: #C6A15B;
     border-radius: 5px;
 }
-
-
-/* =========================================================
-   BOTÓN AGREGAR
-   ========================================================= */
 
 .btn-primary-custom {
     display: inline-flex;
@@ -644,11 +582,6 @@ main {
     font-size: 1.1rem;
 }
 
-
-/* =========================================================
-   TARJETA PRINCIPAL
-   ========================================================= */
-
 .data-card {
     background: #ffffff;
 
@@ -662,11 +595,6 @@ main {
 
     overflow: hidden;
 }
-
-
-/* =========================================================
-   CABECERA DE LA TARJETA
-   ========================================================= */
 
 .data-card-header {
     display: flex;
@@ -709,11 +637,6 @@ main {
 
     border-radius: 50%;
 }
-
-
-/* =========================================================
-   BUSCADOR
-   ========================================================= */
 
 .search-box {
     display: flex;
@@ -769,11 +692,6 @@ main {
     color: #B3A69D;
 }
 
-
-/* =========================================================
-   TABLA
-   ========================================================= */
-
 .custom-table {
     width: 100%;
 
@@ -823,11 +741,6 @@ main {
     border-bottom: none;
 }
 
-
-/* =========================================================
-   PERSONA
-   ========================================================= */
-
 .person-cell {
     display: flex;
     align-items: center;
@@ -866,10 +779,6 @@ main {
 }
 
 
-/* =========================================================
-   ACCIONES
-   ========================================================= */
-
 .actions-column {
     text-align: right;
 }
@@ -900,8 +809,6 @@ main {
 }
 
 
-/* VER */
-
 .action-btn.view {
     color: #536B75;
 
@@ -917,8 +824,6 @@ main {
 }
 
 
-/* EDITAR */
-
 .action-btn.edit {
     color: #756247;
 
@@ -933,9 +838,6 @@ main {
     transform: translateY(-2px);
 }
 
-
-/* ELIMINAR */
-
 .action-btn.delete {
     color: #9B5C50;
 
@@ -949,11 +851,6 @@ main {
 
     transform: translateY(-2px);
 }
-
-
-/* =========================================================
-   FOOTER TABLA
-   ========================================================= */
 
 .table-footer {
     display: flex;
@@ -1010,11 +907,6 @@ main {
 
     box-shadow: 0 4px 10px rgba(107, 115, 53, 0.25);
 }
-
-
-/* =========================================================
-   NAVBAR
-   ========================================================= */
 
 .navbar-custom {
     background: #6A2A16;
@@ -1073,11 +965,6 @@ main {
     width: 100%;
 }
 
-
-/* =========================================================
-   EDITAR INQUILINO
-   ========================================================= */
-
 .edit-card {
     max-width: 850px;
 
@@ -1095,9 +982,6 @@ main {
 
     overflow: hidden;
 }
-
-
-/* CABECERA */
 
 .edit-card-header {
     display: flex;
@@ -1146,9 +1030,6 @@ main {
 
     font-size: 0.85rem;
 }
-
-
-/* FORMULARIO */
 
 .edit-card form {
     padding: 32px;
@@ -1215,11 +1096,6 @@ main {
     color: #B0A39A;
 }
 
-
-/* =========================================================
-   BOTONES FORMULARIO
-   ========================================================= */
-
 .form-actions {
     display: flex;
 
@@ -1259,11 +1135,6 @@ main {
 
     transform: translateY(-1px);
 }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
 
 @media (max-width: 768px) {
 
@@ -1327,3 +1198,202 @@ main {
     }
 }
 
+.details-back {
+    margin-bottom: 20px;
+}
+
+.details-top {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: stretch;
+}
+
+.details-person-data {
+    padding: 25px 32px;
+}
+
+.details-person-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 30px;
+}
+
+.details-person-grid .form-group label {
+    color: black;
+}
+
+.details-summary {
+    border-left: 1px solid #EDE5DE;
+    display: flex;
+    flex-direction: column;
+}
+
+.details-summary-header {
+    padding: 26.5px 30px;
+    border-bottom: 1px solid #EDE5DE;
+}
+
+.details-summary-header h2 {
+    margin: 0 0 6px;
+    color: #34241E;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.details-summary-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 25px 20px;
+    padding: 25px 30px;
+}
+
+.details-summary-item {
+    padding: 22px 0;
+    background-color: #c9d1db;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.details-summary-item strong {
+    display: block;
+    font-size: 1.8rem;
+    color: #34241E;
+}
+
+.details-summary-item span {
+    color: black;
+}
+
+.details-history {
+    margin-top: 35px;
+}
+
+.history-year {
+    margin-bottom: 25px;
+    border: solid 2px black;
+}
+
+.history-event {
+    padding: 25px 32px;
+}
+
+.history-event-last {
+    padding-top: 0;
+    padding-bottom: 30px;
+}
+
+.history-date {
+    color: black;
+    font-size: .85rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.property-event {
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 22px;
+    background: #FCFAF8;
+}
+
+.property-event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.property-event-header h3 {
+    margin: 0 0 6px;
+    color: #34241E;
+}
+
+.property-event-header span:not(.status-badge) {
+    color: #806F65;
+}
+
+.status-badge {
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 800;
+}
+
+.status-rented {
+    background: #E0E5D7;
+    color: #5E6842;
+}
+
+.status-available {
+    background: #F5F0E8;
+    color: #756247;
+}
+
+.property-event-details {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #E9E1DB;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.property-event-details small {
+    color: black;
+}
+
+.property-event-details div > div {
+    font-weight: 700;
+}
+
+.payment-ok {
+    color: #5E6842 !important;
+}
+
+.history-empty {
+    padding: 30px;
+    text-align: center;
+    color: black;
+}
+
+@media (max-width: 900px) {
+
+    .details-top {
+        grid-template-columns: 1fr;
+    }
+
+    .details-summary {
+        border-left: none;
+        border-top: 1px solid #EDE5DE;
+    }
+
+    .details-summary-grid {
+        padding: 25px 32px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .details-person-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .property-event-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .property-event-details {
+        grid-template-columns: 1fr;
+    }
+
+}
