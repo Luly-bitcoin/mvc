@@ -1,150 +1,75 @@
+@model mvc.Models.Propietario
 @{
-    ViewData["Title"] = "Agregar Inquilino";
+    ViewData["Title"] = "Agregar Propietario";
 }
 
 <div class="management-page">
 
-    <!-- ENCABEZADO -->
-
     <div class="page-header">
-
         <div>
             <h1>AGREGAR PROPIETARIO</h1>
         </div>
-
     </div>
-
-
-    <!-- TARJETA -->
 
     <div class="edit-card">
 
-        <!-- CABECERA -->
-
         <div class="edit-card-header">
-
             <div class="edit-avatar">
                 +
             </div>
-
             <div>
                 <h2>Nuevo propietario</h2>
-
                 <span>
                     Completá los datos de la persona
                 </span>
             </div>
-
         </div>
 
-
-        <!-- FORMULARIO -->
-
-        <form>
-
+        <form asp-action="Create" method="post">
             <div class="form-grid">
 
-                <!-- NOMBRE -->
-
                 <div class="form-group">
-
-                    <label for="nombre">
-                        Nombre
-                    </label>
-
-                    <input type="text"
-                           id="nombre"
-                           name="nombre"
-                           placeholder="Ej: María" />
-
+                    <label asp-for="Nombre">Nombre</label>
+                    <input asp-for="Nombre" placeholder="Ej: María" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras" required />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
 
-
-                <!-- APELLIDO -->
-
                 <div class="form-group">
-
-                    <label for="apellido">
-                        Apellido
-                    </label>
-
-                    <input type="text"
-                           id="apellido"
-                           name="apellido"
-                           placeholder="Ej: Gómez" />
-
+                    <label asp-for="Apellido">Apellido</label>
+                    <input asp-for="Apellido" placeholder="Ej: Gómez" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras" required />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
                 </div>
 
-
-                <!-- DNI -->
-
                 <div class="form-group">
-
-                    <label for="dni">
-                        DNI
-                    </label>
-
-                    <input type="text"
-                           id="dni"
-                           name="dni"
-                           placeholder="Ej: 38.456.789" />
-
+                    <label asp-for="Dni">DNI</label>
+                    <input asp-for="Dni" type="text" placeholder="Ej: 38456789" maxlength="8" minlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required />
+                    <span asp-validation-for="Dni" class="text-danger"></span>
                 </div>
 
-
-                <!-- EMAIL -->
-
                 <div class="form-group">
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input type="email"
-                           id="email"
-                           name="email"
-                           placeholder="Ej: maria@email.com" />
-
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" placeholder="Ej: maria@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
-
-                <!-- TELÉFONO -->
-
                 <div class="form-group">
-
-                    <label for="telefono">
-                        Teléfono
-                    </label>
-
-                    <input type="tel"
-                           id="telefono"
-                           name="telefono"
-                           placeholder="Ej: 266 4567890" />
-
+                    <label asp-for="Telefono">Teléfono</label>
+                    <input asp-for="Telefono" type="tel" placeholder="Ej: 2664567890" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
                 </div>
 
             </div>
 
-
-            <!-- BOTONES -->
-
             <div class="form-actions">
-
-                <a asp-action="Index"
-                   class="btn-cancel">
+                <a asp-action="Index" class="btn-cancel">
                     Cancelar
                 </a>
-
-                <button type="button"
-                        class="btn-primary-custom">
+                <button type="submit" class="btn-primary-custom">
                     <span class="btn-icon">✓</span>
                     Guardar propietario
                 </button>
-
             </div>
 
         </form>
-
     </div>
-
 </div>
