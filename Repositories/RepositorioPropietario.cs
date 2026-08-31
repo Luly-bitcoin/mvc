@@ -6,6 +6,7 @@ namespace mvc.Repositories
     public interface IRepositorioPropietario
     {
         List<Propietario> ObtenerTodos();
+        IEnumerable<Propietario> ObtenerPaginado(int pagina, int cantidadPorPagina);
         void Alta(Propietario propietario);
         Propietario? ObtenerPorId(int id);
         void Modificacion(Propietario propietario);
@@ -48,6 +49,41 @@ namespace mvc.Repositories
                 }
             }
             return propietarios;
+        }
+
+        public IEnumerable<Propietario> ObtenerPaginado(int pagina, int cantidadPorPagina)
+        {
+            var lista = new List<Propietario>();
+            int offset = (pagina - 1) * cantidadPorPagina;
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                string sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM propietario ORDER BY Id LIMIT @Cantidad OFFSET @Offset";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Offset", offset);
+                    command.Parameters.AddWithValue("@Cantidad", cantidadPorPagina);
+
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new Propietario
+                            {
+                                Id = reader.GetInt32(nameof(Propietario.Id)),
+                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
+                                Apellido = reader.GetString(nameof(Propietario.Apellido)),
+                                Dni = reader.GetString(nameof(Propietario.Dni)),
+                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Email))) ? null : reader.GetString(nameof(Propietario.Email)),
+                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Telefono))) ? null : reader.GetString(nameof(Propietario.Telefono))
+                            });
+                        }
+                    }
+                }
+            }
+            return lista;
         }
 
         public void Alta(Propietario propietario)

@@ -13,9 +13,11 @@ namespace mvc.Controllers
             _repositorio = repositorio;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pagina = 1)
         {
-            var inquilinos = _repositorio.ObtenerTodos();
+            int cantidadPorPagina = 10;
+            var inquilinos = _repositorio.ObtenerPaginado(pagina, cantidadPorPagina);
+            ViewBag.PaginaActual = pagina;
             return View(inquilinos);
         }
 

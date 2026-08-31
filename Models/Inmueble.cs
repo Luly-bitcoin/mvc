@@ -6,7 +6,7 @@ namespace mvc.Models
 
         public int IdPropietario { get; set; }
 
-        public string Tipo { get; set; } = "";
+        public int IdTipoInmueble { get; set; }
 
         public string Direccion { get; set; } = "";
 
@@ -23,6 +23,8 @@ namespace mvc.Models
         public string? Fotos { get; set; }
 
         public string? PropietarioNombre { get; set; }
+
+        public string? TipoNombre { get; set; }
 
         public string Estado
         {

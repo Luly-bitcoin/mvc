@@ -6,6 +6,7 @@ namespace mvc.Repositories
     public interface IRepositorioInquilino
     {
         List<Inquilino> ObtenerTodos();
+        IEnumerable<Inquilino> ObtenerPaginado(int pagina, int cantidadPorPagina);
         void Alta(Inquilino inquilino);
         Inquilino? ObtenerPorId(int id);
         void Modificacion(Inquilino inquilino);
@@ -62,6 +63,41 @@ namespace mvc.Repositories
             return inquilinos;
         }
 
+        public IEnumerable<Inquilino> ObtenerPaginado(int pagina, int cantidadPorPagina)
+        {
+            var inquilinos = new List<Inquilino>();
+            int offset = (pagina - 1) * cantidadPorPagina;
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                string sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM inquilino ORDER BY Id LIMIT @Cantidad OFFSET @Offset";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Offset", offset);
+                    command.Parameters.AddWithValue("@Cantidad", cantidadPorPagina);
+
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            inquilinos.Add(new Inquilino
+                            {
+                                Id = reader.GetInt32(nameof(Inquilino.Id)),
+                                Nombre = reader.GetString(nameof(Inquilino.Nombre)),
+                                Apellido = reader.GetString(nameof(Inquilino.Apellido)),
+                                Dni = reader.GetString(nameof(Inquilino.Dni)),
+                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Inquilino.Email))) ? null : reader.GetString(nameof(Inquilino.Email)),
+                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Inquilino.Telefono))) ? null : reader.GetString(nameof(Inquilino.Telefono))
+                            });
+                        }
+                    }
+                }
+            }
+            return inquilinos;
+        }
 
         public void Alta(Inquilino inquilino)
         {
@@ -101,7 +137,6 @@ namespace mvc.Repositories
                 }
             }
         }
-
 
         public Inquilino? ObtenerPorId(int id)
         {
@@ -156,7 +191,6 @@ namespace mvc.Repositories
             return inquilino;
         }
 
-
         public void Modificacion(Inquilino inquilino)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -203,7 +237,6 @@ namespace mvc.Repositories
                 }
             }
         }
-
 
         public void Baja(int id)
         {

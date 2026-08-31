@@ -12,12 +12,16 @@ namespace mvc.Controllers
         {
             _repositorio = repositorio;
         }
-
-        public IActionResult Index()
-        {
-            var propietarios = _repositorio.ObtenerTodos();
-            return View(propietarios);
-        }
+public IActionResult Index(int pagina = 1)
+{
+    int cantidadPorPagina = 10;
+    
+    var propietarios = _repositorio.ObtenerPaginado(pagina, cantidadPorPagina);
+    
+    ViewBag.PaginaActual = pagina;
+    
+    return View(propietarios);
+}
 
         public IActionResult Details(int id)
         {

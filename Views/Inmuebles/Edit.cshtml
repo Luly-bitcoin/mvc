@@ -45,14 +45,17 @@
 
                 <div class="form-group-custom">
 
-                    <label asp-for="Tipo">
+                    <label asp-for="IdTipoInmueble">
                         Tipo de inmueble
                     </label>
 
-                    <input asp-for="Tipo"
-                           class="form-control-custom" />
+                    <select asp-for="IdTipoInmueble"
+                            asp-items="ViewBag.TiposInmueble"
+                            class="form-control-custom">
+                        <option value="">Seleccionar tipo</option>
+                    </select>
 
-                    <span asp-validation-for="Tipo"
+                    <span asp-validation-for="IdTipoInmueble"
                           class="text-danger">
                     </span>
 

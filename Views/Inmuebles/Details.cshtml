@@ -43,7 +43,7 @@
             <div class="property-details-header">
 
                 <span class="property-type">
-                    @Model.Tipo
+                    @Model.TipoNombre
                 </span>
 
                 @if (Model.Activo == 1)
@@ -86,9 +86,6 @@
                 </div>
 
             </div>
-
-
-            <!-- UBICACIÓN -->
 
             @if (!string.IsNullOrEmpty(Model.Coord))
             {
@@ -207,9 +204,6 @@
 
                 </div>
             }
-
-
-            <!-- ACCIONES -->
 
             <div class="property-actions">
 

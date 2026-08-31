@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using mvc.Models;
 using mvc.Repositories;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace mvc.Controllers
 {
@@ -9,24 +13,27 @@ namespace mvc.Controllers
     {
         private readonly IRepositorioInmueble repositorioInmueble;
         private readonly IRepositorioPropietario repositorioPropietario;
+        private readonly IRepositorioTipoInmueble repositorioTipoInmueble;
 
         public InmueblesController(
             IRepositorioInmueble repositorioInmueble,
-            IRepositorioPropietario repositorioPropietario)
+            IRepositorioPropietario repositorioPropietario,
+            IRepositorioTipoInmueble repositorioTipoInmueble)
         {
             this.repositorioInmueble = repositorioInmueble;
             this.repositorioPropietario = repositorioPropietario;
+            this.repositorioTipoInmueble = repositorioTipoInmueble;
         }
 
-        // GET: Inmuebles
-        public IActionResult Index()
+        public IActionResult Index(int pagina = 1)
         {
-            var inmuebles = repositorioInmueble.ObtenerTodos();
-
+            int cantidadPorPagina = 10;
+            var inmuebles = repositorioInmueble.ObtenerPaginado(pagina, cantidadPorPagina);
+            ViewBag.PaginaActual = pagina;
+            
             return View(inmuebles);
         }
 
-        // GET: Inmuebles/Details/5
         public IActionResult Details(int id)
         {
             var inmueble = repositorioInmueble.ObtenerPorId(id);
@@ -39,15 +46,14 @@ namespace mvc.Controllers
             return View(inmueble);
         }
 
-        // GET: Inmuebles/Create
         public IActionResult Create()
         {
             CargarPropietarios();
-
+            CargarTiposInmueble();
+            
             return View();
         }
 
-        // POST: Inmuebles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(
@@ -58,12 +64,12 @@ namespace mvc.Controllers
             if (!ModelState.IsValid)
             {
                 CargarPropietarios(inmueble.IdPropietario);
+                CargarTiposInmueble(inmueble.IdTipoInmueble);
                 return View(inmueble);
             }
 
             inmueble.Activo = 1;
 
-            // Crear carpeta si no existe
             string carpeta = Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "wwwroot",
@@ -76,12 +82,10 @@ namespace mvc.Controllers
                 Directory.CreateDirectory(carpeta);
             }
 
-            // FOTO DE PORTADA
             if (fotoPortada != null && fotoPortada.Length > 0)
             {
                 string extension = Path.GetExtension(fotoPortada.FileName);
                 string nombreArchivo = Guid.NewGuid().ToString() + extension;
-
                 string rutaCompleta = Path.Combine(carpeta, nombreArchivo);
 
                 using (var stream = new FileStream(rutaCompleta, FileMode.Create))
@@ -92,7 +96,6 @@ namespace mvc.Controllers
                 inmueble.FotoPortada = "/uploads/inmuebles/" + nombreArchivo;
             }
 
-            // OTRAS FOTOS
             if (fotos != null && fotos.Count > 0)
             {
                 List<string> rutasFotos = new List<string>();
@@ -103,7 +106,6 @@ namespace mvc.Controllers
                     {
                         string extension = Path.GetExtension(foto.FileName);
                         string nombreArchivo = Guid.NewGuid().ToString() + extension;
-
                         string rutaCompleta = Path.Combine(carpeta, nombreArchivo);
 
                         using (var stream = new FileStream(rutaCompleta, FileMode.Create))
@@ -123,7 +125,6 @@ namespace mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Inmuebles/Edit/5
         public IActionResult Edit(int id)
         {
             var inmueble = repositorioInmueble.ObtenerPorId(id);
@@ -134,11 +135,11 @@ namespace mvc.Controllers
             }
 
             CargarPropietarios(inmueble.IdPropietario);
+            CargarTiposInmueble(inmueble.IdTipoInmueble);
 
             return View(inmueble);
         }
 
-        // POST: Inmuebles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Inmueble inmueble)
@@ -151,6 +152,7 @@ namespace mvc.Controllers
             if (!ModelState.IsValid)
             {
                 CargarPropietarios(inmueble.IdPropietario);
+                CargarTiposInmueble(inmueble.IdTipoInmueble);
                 return View(inmueble);
             }
 
@@ -159,7 +161,6 @@ namespace mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Inmuebles/Delete/5
         public IActionResult Delete(int id)
         {
             var inmueble = repositorioInmueble.ObtenerPorId(id);
@@ -172,7 +173,6 @@ namespace mvc.Controllers
             return View(inmueble);
         }
 
-        // POST: Inmuebles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -192,6 +192,20 @@ namespace mvc.Controllers
                     Value = p.Id.ToString(),
                     Text = $"{p.Nombre} {p.Apellido}",
                     Selected = seleccionado.HasValue && p.Id == seleccionado.Value
+                })
+                .ToList();
+        }
+
+        private void CargarTiposInmueble(int? seleccionado = null)
+        {
+            var tipos = repositorioTipoInmueble.ObtenerTodos();
+
+            ViewBag.TiposInmueble = tipos
+                .Select(t => new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = t.Descripcion,
+                    Selected = seleccionado.HasValue && t.Id == seleccionado.Value
                 })
                 .ToList();
         }
