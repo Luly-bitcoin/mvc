@@ -1,0 +1,233 @@
+@model mvc.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Detalle del inmueble";
+}
+
+<div class="management-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>DETALLE DEL INMUEBLE</h1>
+        </div>
+
+        <a asp-action="Index"
+           class="btn-secondary-custom">
+            ← Volver
+        </a>
+
+    </div>
+
+    <div class="property-details-card">
+
+        <div class="property-details-image">
+
+            @if (!string.IsNullOrEmpty(Model.FotoPortada))
+            {
+                <img src="@Model.FotoPortada"
+                     alt="Foto de @Model.Direccion" />
+            }
+            else
+            {
+                <div class="property-details-placeholder">
+                    🏠
+                    <span>Sin imagen disponible</span>
+                </div>
+            }
+
+        </div>
+
+        <div class="property-details-content">
+
+            <div class="property-details-header">
+
+                <span class="property-type">
+                    @Model.Tipo
+                </span>
+
+                @if (Model.Activo == 1)
+                {
+                    <span class="status-badge status-active">
+                        Disponible
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge status-inactive">
+                        No disponible
+                    </span>
+                }
+
+            </div>
+
+            <h2>@Model.Direccion</h2>
+
+            <div class="property-info-grid">
+
+                <div class="property-info-item">
+                    <span>Propietario</span>
+                    <strong>@Model.PropietarioNombre</strong>
+                </div>
+
+                <div class="property-info-item">
+                    <span>Capacidad</span>
+                    <strong>@Model.Cupo personas</strong>
+                </div>
+
+                <div class="property-info-item">
+                    <span>Precio por día</span>
+                    <strong>@Model.Precio.ToString("C")</strong>
+                </div>
+
+                <div class="property-info-item">
+                    <span>ID del inmueble</span>
+                    <strong>@Model.Id</strong>
+                </div>
+
+            </div>
+
+
+            <!-- UBICACIÓN -->
+
+            @if (!string.IsNullOrEmpty(Model.Coord))
+            {
+                var coordenadas = Model.Coord.Split(',');
+
+                if (coordenadas.Length == 2 &&
+                    double.TryParse(
+                        coordenadas[0].Trim(),
+                        System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out double latitud) &&
+                    double.TryParse(
+                        coordenadas[1].Trim(),
+                        System.Globalization.NumberStyles.Any,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out double longitud))
+                {
+                    <div class="property-map-section">
+
+                        <div class="property-map-header">
+
+                            <span class="property-map-label">
+                                📍 Ubicación
+                            </span>
+
+                            <p>
+                                Consultá la ubicación exacta del inmueble.
+                            </p>
+
+                        </div>
+
+                        <div class="property-location-card">
+
+                            <div class="location-info">
+
+                                <strong>
+                                    Ubicación del inmueble
+                                </strong>
+
+                                <span>
+                                    @Model.Coord
+                                </span>
+
+                            </div>
+
+                            @{
+                                string latitudGoogle = latitud.ToString(
+                                    System.Globalization.CultureInfo.InvariantCulture
+                                );
+
+                                string longitudGoogle = longitud.ToString(
+                                    System.Globalization.CultureInfo.InvariantCulture
+                                );
+                            }
+
+                            <a href="https://www.google.com/maps/search/?api=1&query=@latitudGoogle,@longitudGoogle"
+                            target="_blank"
+                            class="btn-map-custom">
+                                Ver en Google Maps
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="property-map-section">
+
+                        <div class="property-location-card location-empty">
+
+                            <div class="location-icon">
+                                ⚠️
+                            </div>
+
+                            <div class="location-info">
+
+                                <strong>
+                                    Ubicación inválida
+                                </strong>
+
+                                <span>
+                                    Las coordenadas ingresadas no tienen un formato válido.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="property-map-section">
+
+                    <div class="property-location-card location-empty">
+
+                        <div class="location-icon">
+                            📍
+                        </div>
+
+                        <div class="location-info">
+
+                            <strong>
+                                Ubicación no especificada
+                            </strong>
+
+                            <span>
+                                Este inmueble no tiene una ubicación cargada.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+
+            <!-- ACCIONES -->
+
+            <div class="property-actions">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn-primary-custom">
+                    Editar inmueble
+                </a>
+
+                <a asp-action="Index"
+                   class="btn-secondary-custom">
+                    Volver al listado
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

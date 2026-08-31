@@ -1,0 +1,148 @@
+@model IEnumerable<mvc.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "Inmuebles";
+}
+
+<div class="management-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>GESTIÓN DE INMUEBLES</h1>
+        </div>
+
+        <a asp-action="Create" class="btn-primary-custom">
+            <span class="btn-icon">+</span>
+            Agregar inmueble
+        </a>
+
+    </div>
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+                <h2>Inmuebles registrados</h2>
+
+                <span class="data-count">
+                    @Model.Count() inmuebles
+                </span>
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table custom-table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Dirección</th>
+                        <th>Tipo</th>
+                        <th>Propietario</th>
+                        <th>Cupo</th>
+                        <th>Precio por día</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var inmueble in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @if (!string.IsNullOrEmpty(inmueble.FotoPortada))
+                                {
+                                    <img src="@inmueble.FotoPortada"
+                                         alt="Foto de @inmueble.Direccion"
+                                         class="property-thumb" />
+                                }
+                                else
+                                {
+                                    <div class="property-placeholder">
+                                        🏠
+                                    </div>
+                                }
+                            </td>
+
+                            <td>
+                                <strong>@inmueble.Direccion</strong>
+                            </td>
+
+                            <td>
+                                @inmueble.Tipo
+                            </td>
+
+                            <td>
+                                @inmueble.PropietarioNombre
+                            </td>
+
+                            <td>
+                                @inmueble.Cupo personas
+                            </td>
+
+                            <td>
+                                <strong>
+                                    @inmueble.Precio.ToString("C")
+                                </strong>
+                            </td>
+
+                            <td>
+                                @if (inmueble.Activo == 1)
+                                {
+                                    <span class="status-badge status-active">
+                                        Disponible
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-inactive">
+                                        No disponible
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@inmueble.Id"
+                                       class="btn-action btn-view">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@inmueble.Id"
+                                       class="btn-action btn-edit">
+                                        Editar
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@inmueble.Id"
+                                       class="btn-action btn-delete">
+                                        Eliminar
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
