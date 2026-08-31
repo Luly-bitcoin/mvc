@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 13, 2026 at 10:34 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 01-09-2026 a las 00:13:48
+-- Versión del servidor: 8.0.43
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,129 +18,177 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `alquileres_temporarios`
+-- Base de datos: `alquileres_temporarios`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inmueble`
+-- Estructura de tabla para la tabla `inmueble`
 --
 
 CREATE TABLE `inmueble` (
-  `id` int(11) NOT NULL,
-  `id_propietario` int(11) NOT NULL,
-  `tipo` varchar(50) NOT NULL,
-  `direccion` varchar(255) NOT NULL,
-  `cupo` int(11) NOT NULL,
-  `coord` varchar(100) DEFAULT NULL,
+  `id` int NOT NULL,
+  `id_propietario` int NOT NULL,
+  `id_tipo_inmueble` int NOT NULL,
+  `direccion` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `cupo` int NOT NULL,
+  `coord` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `foto_portada` varchar(255) DEFAULT NULL,
-  `fotos` varchar(255) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `foto_portada` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `fotos` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inmueble`
+--
+
+INSERT INTO `inmueble` (`id`, `id_propietario`, `id_tipo_inmueble`, `direccion`, `cupo`, `coord`, `precio`, `activo`, `foto_portada`, `fotos`) VALUES
+(1, 2, 4, 'La Toma', 2, NULL, 100000.00, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inquilino`
+-- Estructura de tabla para la tabla `inquilino`
 --
 
 CREATE TABLE `inquilino` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `dni` varchar(20) NOT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `dni` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pago`
+-- Estructura de tabla para la tabla `pago`
 --
 
 CREATE TABLE `pago` (
-  `id` int(11) NOT NULL,
-  `id_reserva` int(11) NOT NULL,
-  `concepto` varchar(150) NOT NULL,
+  `id` int NOT NULL,
+  `id_reserva` int NOT NULL,
+  `concepto` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `fecha_pago` date NOT NULL,
   `importe` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `creado_por_user_id` int(11) NOT NULL,
-  `anulado_por_user_id` int(11) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `creado_por_user_id` int NOT NULL,
+  `anulado_por_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `propietario`
+-- Estructura de tabla para la tabla `propietario`
 --
 
 CREATE TABLE `propietario` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `dni` varchar(20) NOT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `dni` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `propietario`
+--
+
+INSERT INTO `propietario` (`id`, `nombre`, `apellido`, `dni`, `email`, `telefono`) VALUES
+(2, 'Lourdes', 'Gomez', '12312413', 'maria@gmail.com', '3123213'),
+(3, 'Louis', 'Sosa', '21312414', 'loues@gmai.com', '21312321'),
+(4, 'Lucas', 'Asakds', '21321432', 'lucas@hotmail.com', '2243523522'),
+(5, 'Jose', 'Paez', '21312342', 'jose@gmail.com', '2323423524'),
+(6, 'Sofia', 'Luces', '21312312', 'so@gmail.com', '24233242532'),
+(7, 'Marta', 'Sanchez', '32423423', 'mar@gmail.com', '24143143431'),
+(8, 'Juan', 'Lopez', '32423423', 'juan@gmail.com', '24325215252'),
+(9, 'Lionel', 'Messi', '23423423', '10@gmail.com', '231412421412'),
+(10, 'Leandro', 'Paredes', '32432412', 'lea@gmail.com', '241241241241'),
+(11, 'Taylor', 'Swift', '32412421', 'tay@gmail.com', '214194829014'),
+(12, 'Selena', 'Gomez', '41243141', 'sel@gmail.com', '94801248120');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reserva`
+-- Estructura de tabla para la tabla `reserva`
 --
 
 CREATE TABLE `reserva` (
-  `id` int(11) NOT NULL,
-  `id_inmueble` int(11) NOT NULL,
-  `id_inquilino` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `id_inmueble` int NOT NULL,
+  `id_inquilino` int NOT NULL,
   `fecha_desde` date NOT NULL,
   `fecha_hasta` date NOT NULL,
   `monto_diario` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `creado_por_user_id` int(11) NOT NULL,
-  `terminado_por_user_id` int(11) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `creado_por_user_id` int NOT NULL,
+  `terminado_por_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `tipo_inmueble`
 --
 
-CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL,
-  `nombre_usuario` varchar(50) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `avatar` varchar(255) DEFAULT NULL,
-  `rol` varchar(50) NOT NULL
+CREATE TABLE `tipo_inmueble` (
+  `id` int NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Volcado de datos para la tabla `tipo_inmueble`
+--
+
+INSERT INTO `tipo_inmueble` (`id`, `descripcion`) VALUES
+(1, 'Casa'),
+(2, 'Departamento'),
+(3, 'Monoambiente'),
+(4, 'Loft'),
+(5, 'Quinta'),
+(6, 'Local Comercial');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int NOT NULL,
+  `nombre_usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `rol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `inmueble`
+-- Indices de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_inmueble_propietario` (`id_propietario`);
+  ADD KEY `fk_inmueble_propietario` (`id_propietario`),
+  ADD KEY `fk_inmueble_tipo` (`id_tipo_inmueble`);
 
 --
--- Indexes for table `inquilino`
+-- Indices de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pago`
+-- Indices de la tabla `pago`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`id`),
@@ -149,13 +197,13 @@ ALTER TABLE `pago`
   ADD KEY `fk_pago_anulado_por` (`anulado_por_user_id`);
 
 --
--- Indexes for table `propietario`
+-- Indices de la tabla `propietario`
 --
 ALTER TABLE `propietario`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reserva`
+-- Indices de la tabla `reserva`
 --
 ALTER TABLE `reserva`
   ADD PRIMARY KEY (`id`),
@@ -165,7 +213,13 @@ ALTER TABLE `reserva`
   ADD KEY `fk_reserva_terminado_por` (`terminado_por_user_id`);
 
 --
--- Indexes for table `usuario`
+-- Indices de la tabla `tipo_inmueble`
+--
+ALTER TABLE `tipo_inmueble`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
@@ -173,57 +227,64 @@ ALTER TABLE `usuario`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `inmueble`
+-- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `inquilino`
+-- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pago`
+-- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `propietario`
+-- AUTO_INCREMENT de la tabla `propietario`
 --
 ALTER TABLE `propietario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `reserva`
+-- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de la tabla `tipo_inmueble`
+--
+ALTER TABLE `tipo_inmueble`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `inmueble`
+-- Filtros para la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  ADD CONSTRAINT `fk_inmueble_propietario` FOREIGN KEY (`id_propietario`) REFERENCES `propietario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_inmueble_propietario` FOREIGN KEY (`id_propietario`) REFERENCES `propietario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_inmueble_tipo` FOREIGN KEY (`id_tipo_inmueble`) REFERENCES `tipo_inmueble` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `pago`
+-- Filtros para la tabla `pago`
 --
 ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_anulado_por` FOREIGN KEY (`anulado_por_user_id`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -231,7 +292,7 @@ ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_reserva` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `reserva`
+-- Filtros para la tabla `reserva`
 --
 ALTER TABLE `reserva`
   ADD CONSTRAINT `fk_reserva_creado_por` FOREIGN KEY (`creado_por_user_id`) REFERENCES `usuario` (`id`) ON UPDATE CASCADE,
