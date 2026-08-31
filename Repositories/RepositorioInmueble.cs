@@ -1,12 +1,14 @@
 using mvc.Models;
 using MySqlConnector;
+using System;
+using System.Collections.Generic;
 
 namespace mvc.Repositories
 {
     public interface IRepositorioInmueble
     {
         List<Inmueble> ObtenerTodos();
-        IEnumerable<Inmueble> ObtenerPaginado(int pagina, int cantidadPorPagina);
+        IEnumerable<Inmueble> ObtenerPaginado(int pagina, int cantidadPorPagina, string? ubicacion = null, int? personas = null, int? idTipo = null);
         Inmueble? ObtenerPorId(int id);
         void Alta(Inmueble inmueble);
         void Modificacion(Inmueble inmueble);
@@ -62,7 +64,7 @@ namespace mvc.Repositories
             return inmuebles;
         }
 
-        public IEnumerable<Inmueble> ObtenerPaginado(int pagina, int cantidadPorPagina)
+        public IEnumerable<Inmueble> ObtenerPaginado(int pagina, int cantidadPorPagina, string? ubicacion = null, int? personas = null, int? idTipo = null)
         {
             var inmuebles = new List<Inmueble>();
             int offset = (pagina - 1) * cantidadPorPagina;
@@ -87,6 +89,10 @@ namespace mvc.Repositories
                 FROM inmueble i
                 INNER JOIN propietario p ON i.id_propietario = p.id
                 INNER JOIN tipo_inmueble t ON i.id_tipo_inmueble = t.id
+                WHERE i.activo = 1
+                AND (@Ubicacion IS NULL OR i.direccion LIKE CONCAT('%', @Ubicacion, '%'))
+                AND (@Personas IS NULL OR i.cupo >= @Personas)
+                AND (@IdTipo IS NULL OR i.id_tipo_inmueble = @IdTipo)
                 ORDER BY i.id DESC
                 LIMIT @Cantidad OFFSET @Offset;
             ";
@@ -94,6 +100,9 @@ namespace mvc.Repositories
             using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@Offset", offset);
             command.Parameters.AddWithValue("@Cantidad", cantidadPorPagina);
+            command.Parameters.AddWithValue("@Ubicacion", ubicacion ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Personas", personas ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IdTipo", idTipo ?? (object)DBNull.Value);
 
             using var reader = command.ExecuteReader();
 

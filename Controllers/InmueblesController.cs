@@ -25,11 +25,15 @@ namespace mvc.Controllers
             this.repositorioTipoInmueble = repositorioTipoInmueble;
         }
 
-        public IActionResult Index(int pagina = 1)
+        public IActionResult Index(int pagina = 1, string? ubicacion = null, int? personas = null, int? idTipo = null)
         {
             int cantidadPorPagina = 10;
-            var inmuebles = repositorioInmueble.ObtenerPaginado(pagina, cantidadPorPagina);
+            var inmuebles = repositorioInmueble.ObtenerPaginado(pagina, cantidadPorPagina, ubicacion, personas, idTipo);
+            
             ViewBag.PaginaActual = pagina;
+            ViewBag.Ubicacion = ubicacion;
+            ViewBag.Personas = personas;
+            ViewBag.IdTipo = idTipo;
             
             return View(inmuebles);
         }

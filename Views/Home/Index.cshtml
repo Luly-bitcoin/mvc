@@ -21,54 +21,38 @@
                 y encontrá el lugar ideal para tu próxima estadía.
             </p>
 
-
-            <div class="search-box">
+            <form asp-controller="Inmuebles" asp-action="Index" method="get" class="search-box">
 
                 <div class="search-field">
-
                     <div>
                         <label>Ubicación</label>
-                        <span>¿Dónde querés ir?</span>
+                        <input type="text" name="ubicacion" placeholder="¿Dónde querés ir?" style="border: none; background: transparent; outline: none; width: 100%; font-size: 1rem; color: #333;" />
                     </div>
-
                 </div>
 
-
                 <div class="search-field">
-
                     <div>
                         <label>Fechas</label>
-                        <span>Elegí tus fechas</span>
+                        <input type="text" placeholder="Elegí tus fechas" disabled style="border: none; background: transparent; outline: none; width: 100%; font-size: 1rem; color: #999; cursor: not-allowed;" title="Filtrado por fechas en desarrollo" />
                     </div>
-
                 </div>
-
 
                 <div class="search-field">
-
-
                     <div>
                         <label>Personas</label>
-                        <span>¿Cuántos son?</span>
+                        <input type="number" name="personas" placeholder="¿Cuántos son?" min="1" style="border: none; background: transparent; outline: none; width: 100%; font-size: 1rem; color: #333;" />
                     </div>
-
                 </div>
 
-
-                <a asp-controller="Inmuebles"
-                   asp-action="Index"
-                   class="search-button">
-
+                <button type="submit" class="search-button" style="border: none; cursor: pointer;">
                     Buscar
+                </button>
 
-                </a>
-
-            </div>
+            </form>
 
         </div>
 
     </section>
-
 
     <section class="categories">
 
@@ -87,12 +71,12 @@
 
         </div>
 
-
         <div class="category-grid">
 
             <a class="category-card"
                asp-controller="Inmuebles"
-               asp-action="Index">
+               asp-action="Index"
+               asp-route-idTipo="1">
 
                 <div class="category-image house">
                     <img src="~/images/casa.jpg" alt="Casa">
@@ -115,10 +99,10 @@
 
             </a>
 
-
             <a class="category-card"
                asp-controller="Inmuebles"
-               asp-action="Index">
+               asp-action="Index"
+               asp-route-idTipo="2">
 
                 <div class="category-image apartment">
                     <img src="~/images/departamento.jpg" alt="Departamento">
@@ -141,10 +125,10 @@
 
             </a>
 
-
             <a class="category-card"
                asp-controller="Inmuebles"
-               asp-action="Index">
+               asp-action="Index"
+               asp-route-idTipo="5">
 
                 <div class="category-image weekend">
                     <img src="~/images/escapada.jpg" alt="Escapada">
@@ -170,7 +154,6 @@
         </div>
 
     </section>
-
 
     <section class="owner-section">
 
