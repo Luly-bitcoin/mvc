@@ -1,0 +1,31 @@
+@model mvc.Models.TipoInmueble
+
+@{
+    ViewData["Title"] = "Editar Tipo de Inmueble";
+}
+
+<div class="management-page">
+    <div class="page-header">
+        <div>
+            <h1>EDITAR TIPO DE INMUEBLE</h1>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="form-grid">
+                <div class="form-group-custom form-group-full">
+                    <label asp-for="Descripcion">Descripción</label>
+                    <input asp-for="Descripcion" class="form-control-custom" />
+                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a asp-action="Index" class="btn-secondary-custom">Cancelar</a>
+                <button type="submit" class="btn-primary-custom">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>

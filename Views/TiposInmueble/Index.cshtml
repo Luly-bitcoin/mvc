@@ -1,0 +1,73 @@
+@model IEnumerable<mvc.Models.TipoInmueble>
+
+@{
+    ViewData["Title"] = "Tipos de Inmueble";
+}
+
+<div class="management-page">
+    <div class="page-header">
+        <div>
+            <h1>GESTIÓN DE TIPOS DE INMUEBLE</h1>
+        </div>
+        <a asp-action="Create" class="btn-primary-custom">
+            <span class="btn-icon">+</span>
+            Agregar tipo
+        </a>
+    </div>
+
+    <div class="data-card">
+        <div class="table-responsive">
+            <div class="data-card-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3 p-3 border-bottom">
+    <div>
+        <h2 class="m-0">Tipos registrados</h2>
+    </div>
+    <form asp-action="Index" method="get" class="d-flex gap-2 m-0">
+        <input type="text" name="busqueda" class="form-control-custom" placeholder="Buscar tipo..." value="@ViewBag.Busqueda" style="width: 250px;" />
+        <button type="submit" class="btn-primary-custom">Buscar</button>
+        @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
+        {
+            <a asp-action="Index" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Limpiar</a>
+        }
+    </form>
+</div>
+            <table class="table custom-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td><strong>@item.Descripcion</strong></td>
+                            <td>
+                                <div class="action-buttons justify-content-center">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">Editar</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Navegacion" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1 })">Anterior</a>
+        </li>
+        <li class="page-item active">
+            <span class="page-link">Página @ViewBag.PaginaActual</span>
+        </li>
+        <li class="page-item @(Model.Count() < 10 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1 })">Siguiente</a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,93 @@
+@model IEnumerable<mvc.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Reservas";
+}
+
+<div class="management-page">
+    <div class="page-header">
+        <div>
+            <h1>GESTIÓN DE RESERVAS</h1>
+        </div>
+        <a asp-action="Create" class="btn-primary-custom">
+            <span class="btn-icon">+</span>
+            Nueva reserva
+        </a>
+    </div>
+
+    <div class="data-card">
+        <div class="data-card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h2>Contratos registrados</h2>
+            </div>
+            <form asp-action="Index" method="get" class="d-flex gap-2">
+                <input type="text" name="busqueda" class="form-control-custom" placeholder="Buscar dirección o inquilino..." value="@ViewBag.Busqueda" style="width: 250px;" />
+                <button type="submit" class="btn-primary-custom">Buscar</button>
+                @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
+                {
+                    <a asp-action="Index" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Limpiar</a>
+                }
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table custom-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Inmueble</th>
+                        <th>Inquilino</th>
+                        <th>Desde</th>
+                        <th>Hasta</th>
+                        <th>Monto Diario</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reserva in Model)
+                    {
+                        <tr>
+                            <td>@reserva.Id</td>
+                            <td><strong>@reserva.InmuebleDireccion</strong></td>
+                            <td>@reserva.InquilinoNombre</td>
+                            <td>@reserva.FechaDesde.ToString("dd/MM/yyyy")</td>
+                            <td>@reserva.FechaHasta.ToString("dd/MM/yyyy")</td>
+                            <td><strong>@reserva.MontoDiario.ToString("C")</strong></td>
+                            <td>
+                                @if (reserva.Activo == 1)
+                                {
+                                    <span class="status-badge status-active">Vigente</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-inactive">Anulada</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a asp-action="Details" asp-route-id="@reserva.Id" class="btn-action btn-view">Ver</a>
+                                    <a asp-action="Edit" asp-route-id="@reserva.Id" class="btn-action btn-edit">Editar</a>
+                                    <a asp-action="Delete" asp-route-id="@reserva.Id" class="btn-action btn-delete">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Navegacion" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1, busqueda = ViewBag.Busqueda })">Anterior</a>
+        </li>
+        <li class="page-item active">
+            <span class="page-link">Página @ViewBag.PaginaActual</span>
+        </li>
+        <li class="page-item @(Model.Count() < 10 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1, busqueda = ViewBag.Busqueda })">Siguiente</a>
+        </li>
+    </ul>
+</nav>

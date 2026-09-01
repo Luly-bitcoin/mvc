@@ -1,0 +1,76 @@
+@model mvc.Models.Reserva
+
+@{
+    ViewData["Title"] = "Detalle de la reserva";
+}
+
+<div class="management-page">
+    <div class="page-header">
+        <div>
+            <h1>DETALLE DE LA RESERVA</h1>
+        </div>
+        <a asp-action="Index" class="btn-secondary-custom">
+            ← Volver
+        </a>
+    </div>
+
+    <div class="property-details-card">
+        <div class="property-details-content w-100">
+            <div class="property-details-header">
+                <span class="property-type">
+                    Reserva #@Model.Id
+                </span>
+                @if (Model.Activo == 1)
+                {
+                    <span class="status-badge status-active">Vigente</span>
+                }
+                else
+                {
+                    <span class="status-badge status-inactive">Anulada</span>
+                }
+            </div>
+
+            <h2>@Model.InmuebleDireccion</h2>
+
+            <div class="property-info-grid mt-4">
+                <div class="property-info-item">
+                    <span>Inquilino</span>
+                    <strong>@Model.InquilinoNombre</strong>
+                </div>
+                <div class="property-info-item">
+                    <span>Fecha Desde</span>
+                    <strong>@Model.FechaDesde.ToString("dd/MM/yyyy")</strong>
+                </div>
+                <div class="property-info-item">
+                    <span>Fecha Hasta</span>
+                    <strong>@Model.FechaHasta.ToString("dd/MM/yyyy")</strong>
+                </div>
+                <div class="property-info-item">
+                    <span>Monto Diario</span>
+                    <strong>@Model.MontoDiario.ToString("C")</strong>
+                </div>
+                <div class="property-info-item">
+                    <span>Monto Total Estimado</span>
+                    @{
+                        var dias = (Model.FechaHasta - Model.FechaDesde).Days;
+                        var total = dias * Model.MontoDiario;
+                    }
+                    <strong>@total.ToString("C") (@dias días)</strong>
+                </div>
+                <div class="property-info-item">
+                    <span>Usuario Creador (ID)</span>
+                    <strong>@Model.CreadoPorUserId</strong>
+                </div>
+            </div>
+
+            <div class="property-actions mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary-custom">
+                    Editar reserva
+                </a>
+                <a asp-action="Index" class="btn-secondary-custom">
+                    Volver al listado
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
