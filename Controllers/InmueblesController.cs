@@ -142,13 +142,23 @@ namespace mvc.Controllers
             CargarTiposInmueble(inmueble.IdTipoInmueble);
 
             return View(inmueble);
-        }
-
+                }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Inmueble inmueble)
+        public IActionResult Edit(
+            int id,
+            Inmueble inmueble,
+            IFormFile? fotoPortada,
+            List<IFormFile>? fotos)
         {
-            if (id != inmueble.Id)
+                    if (id != inmueble.Id)
+                    {
+                        return NotFound();
+                    }
+            
+            var inmuebleActual = repositorioInmueble.ObtenerPorId(id);
+
+            if (inmuebleActual == null)
             {
                 return NotFound();
             }
@@ -157,7 +167,85 @@ namespace mvc.Controllers
             {
                 CargarPropietarios(inmueble.IdPropietario);
                 CargarTiposInmueble(inmueble.IdTipoInmueble);
+
                 return View(inmueble);
+            }
+
+            inmueble.FotoPortada = inmuebleActual.FotoPortada;
+            inmueble.Fotos = inmuebleActual.Fotos;
+
+            string carpeta = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "inmuebles"
+            );
+
+            if (!Directory.Exists(carpeta))
+            {
+                Directory.CreateDirectory(carpeta);
+            }
+
+            if (fotoPortada != null && fotoPortada.Length > 0)
+            {
+                string extension = Path.GetExtension(fotoPortada.FileName);
+
+                string nombreArchivo =
+                    Guid.NewGuid().ToString() + extension;
+
+                string rutaCompleta =
+                    Path.Combine(carpeta, nombreArchivo);
+
+                using (var stream = new FileStream(
+                    rutaCompleta,
+                    FileMode.Create))
+                {
+                    fotoPortada.CopyTo(stream);
+                }
+
+                inmueble.FotoPortada =
+                    "/uploads/inmuebles/" + nombreArchivo;
+            }
+
+            if (fotos != null && fotos.Count > 0)
+            {
+                List<string> rutasFotos = new List<string>();
+
+                if (!string.IsNullOrEmpty(inmuebleActual.Fotos))
+                {
+                    rutasFotos.AddRange(
+                        inmuebleActual.Fotos
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    );
+                }
+
+                foreach (var foto in fotos)
+                {
+                    if (foto != null && foto.Length > 0)
+                    {
+                        string extension =
+                            Path.GetExtension(foto.FileName);
+
+                        string nombreArchivo =
+                            Guid.NewGuid().ToString() + extension;
+
+                        string rutaCompleta =
+                            Path.Combine(carpeta, nombreArchivo);
+
+                        using (var stream = new FileStream(
+                            rutaCompleta,
+                            FileMode.Create))
+                        {
+                            foto.CopyTo(stream);
+                        }
+
+                        rutasFotos.Add(
+                            "/uploads/inmuebles/" + nombreArchivo
+                        );
+                    }
+                }
+
+                inmueble.Fotos = string.Join(",", rutasFotos);
             }
 
             repositorioInmueble.Modificacion(inmueble);
