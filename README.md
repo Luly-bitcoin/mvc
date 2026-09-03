@@ -44,3 +44,9 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 
 - ABM de Propietarios
 - ABM de Inquilinos
+
+## Segunda entrega
+
+- ABM de inmuebles
+- Tipo de inmuebles
+- Reservas
