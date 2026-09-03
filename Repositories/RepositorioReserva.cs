@@ -132,25 +132,24 @@ namespace mvc.Repositories
             string sql = @"
                 INSERT INTO reserva (
                     id_inmueble, id_inquilino, fecha_desde, fecha_hasta, 
-                    monto_diario, activo, creado_por_user_id
+                    monto_diario, activo
                 ) VALUES (
                     @id_inmueble, @id_inquilino, @fecha_desde, @fecha_hasta, 
-                    @monto_diario, @activo, @creado_por_user_id
+                    @monto_diario, @activo
                 );
             ";
 
             using var command = new MySqlCommand(sql, connection);
+
             command.Parameters.AddWithValue("@id_inmueble", reserva.IdInmueble);
             command.Parameters.AddWithValue("@id_inquilino", reserva.IdInquilino);
             command.Parameters.AddWithValue("@fecha_desde", reserva.FechaDesde);
             command.Parameters.AddWithValue("@fecha_hasta", reserva.FechaHasta);
             command.Parameters.AddWithValue("@monto_diario", reserva.MontoDiario);
             command.Parameters.AddWithValue("@activo", reserva.Activo);
-            command.Parameters.AddWithValue("@creado_por_user_id", reserva.CreadoPorUserId);
 
             command.ExecuteNonQuery();
         }
-
         public void Modificacion(Reserva reserva)
         {
             using var connection = new MySqlConnection(connectionString);
@@ -225,8 +224,15 @@ namespace mvc.Repositories
                 FechaHasta = Convert.ToDateTime(reader["fecha_hasta"]),
                 MontoDiario = Convert.ToDecimal(reader["monto_diario"]),
                 Activo = Convert.ToInt32(reader["activo"]),
-                CreadoPorUserId = Convert.ToInt32(reader["creado_por_user_id"]),
-                TerminadoPorUserId = reader["terminado_por_user_id"] == DBNull.Value ? null : Convert.ToInt32(reader["terminado_por_user_id"]),
+
+                CreadoPorUserId = reader["creado_por_user_id"] == DBNull.Value
+                    ? null
+                    : Convert.ToInt32(reader["creado_por_user_id"]),
+
+                TerminadoPorUserId = reader["terminado_por_user_id"] == DBNull.Value
+                    ? null
+                    : Convert.ToInt32(reader["terminado_por_user_id"]),
+
                 InmuebleDireccion = reader["inmueble_direccion"].ToString(),
                 InquilinoNombre = reader["inquilino_nombre"].ToString()
             };

@@ -1,25 +1,27 @@
 @model mvc.Models.Inmueble
 
 @{
-    ViewData["Title"] = "Detalle del inmueble";
+ViewData["Title"] = "Detalle del inmueble";
 }
 
 <div class="management-page">
 
-    <div class="page-header">
+<div class="page-header">
 
-        <div>
-            <h1>DETALLE DEL INMUEBLE</h1>
-        </div>
-
-        <a asp-action="Index"
-           class="btn-secondary-custom">
-            ← Volver
-        </a>
-
+    <div>
+        <h1>DETALLE DEL INMUEBLE</h1>
     </div>
 
-    <div class="property-details-card">
+    <a asp-action="Index"
+       class="btn-secondary-custom">
+        ← Volver
+    </a>
+
+</div>
+
+<div class="property-details-card">
+
+    <div class="property-details-main">
 
         <div class="property-details-image">
 
@@ -142,8 +144,8 @@
                             }
 
                             <a href="https://www.google.com/maps/search/?api=1&query=@latitudGoogle,@longitudGoogle"
-                            target="_blank"
-                            class="btn-map-custom">
+                               target="_blank"
+                               class="btn-map-custom">
                                 Ver en Google Maps
                             </a>
 
@@ -223,5 +225,40 @@
         </div>
 
     </div>
+
+    @if (!string.IsNullOrEmpty(Model.Fotos))
+    {
+        var fotos = Model.Fotos
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(f => f.Trim())
+            .Where(f => !string.IsNullOrEmpty(f))
+            .ToList();
+
+        if (fotos.Count > 0)
+        {
+            <div class="property-more-photos">
+
+                <div class="property-more-photos-header">
+                    <h3>Más fotos</h3>
+                    <span>@fotos.Count fotos</span>
+                </div>
+
+                <div class="property-more-photos-grid">
+
+                    @foreach (var foto in fotos)
+                    {
+                        <div class="property-more-photo">
+                            <img src="@foto"
+                                 alt="Foto del inmueble @Model.Direccion" />
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
 
 </div>

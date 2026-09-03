@@ -1398,10 +1398,6 @@ main {
 
 }
 
-/* =========================================================
-   INMUEBLES
-   ========================================================= */
-
 .custom-table {
     margin: 0;
 }
@@ -1633,7 +1629,8 @@ main {
 }
 
 .property-details-card {
-    display: grid;
+    padding: 20px;
+    
     grid-template-columns: 42% 58%;
 
     background: white;
@@ -1884,10 +1881,6 @@ main {
 
 }
 
-/* =========================
-   SUBIDA DE IMÁGENES
-   ========================= */
-
 .file-upload {
     width: 100%;
     min-height: 110px;
@@ -1986,10 +1979,6 @@ main {
     color: #8a7062;
     font-size: 13px;
 }
-
-/* ========================================
-   MAPA DEL INMUEBLE
-   ======================================== */
 
 .property-map-section {
     margin-top: 30px;
@@ -2112,10 +2101,6 @@ main {
 
 }
 
-/* ========================================
-   UBICACIÓN DEL INMUEBLE
-   ======================================== */
-
 .property-map-section {
     margin-top: 30px;
     padding-top: 25px;
@@ -2235,10 +2220,6 @@ main {
 }
 
 
-/* ========================================
-   CARGA DE IMÁGENES
-   ======================================== */
-
 .file-upload {
     display: flex;
     align-items: center;
@@ -2305,10 +2286,6 @@ main {
 }
 
 
-/* ========================================
-   VISTA PREVIA
-   ======================================== */
-
 .image-preview-container {
     margin-top: 15px;
 }
@@ -2325,11 +2302,6 @@ main {
 
     box-shadow: 0 4px 12px rgba(71, 33, 21, 0.12);
 }
-
-
-/* ========================================
-   VISTA PREVIA MÚLTIPLE
-   ======================================== */
 
 .images-preview-grid {
     display: flex;
@@ -2351,4 +2323,80 @@ main {
     border: 2px solid #e2d2c5;
 
     box-shadow: 0 3px 8px rgba(71, 33, 21, 0.1);
+}
+
+.property-details-main {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 35px;
+}
+
+.property-more-photos {
+margin-top: 30px;
+padding-top: 25px;
+border-top: 1px solid rgba(71, 33, 21, 0.15);
+}
+
+.property-more-photos-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.property-more-photos-header h3 {
+margin: 0;
+color: #472115;
+font-size: 1.4rem;
+}
+
+.property-more-photos-header span {
+color: #6e3320;
+font-size: 0.9rem;
+}
+
+.property-more-photos-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 15px;
+}
+
+.property-more-photo {
+width: 100%;
+height: 150px;
+overflow: hidden;
+border-radius: 12px;
+background: #f3eee9;
+}
+
+.property-more-photo img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+transition: transform 0.3s ease;
+}
+
+.property-more-photo:hover img {
+transform: scale(1.05);
+}
+
+@media (max-width: 900px) {
+
+.property-details-main {
+    grid-template-columns: 1fr;
+}
+
+.property-more-photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+}
+
+@media (max-width: 500px) {
+
+.property-more-photos-grid {
+    grid-template-columns: 1fr;
+}
+
 }

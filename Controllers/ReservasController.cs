@@ -63,7 +63,6 @@ namespace mvc.Controllers
             }
 
             reserva.Activo = 1;
-            reserva.CreadoPorUserId = 1; 
 
             repositorioReserva.Alta(reserva);
             return RedirectToAction(nameof(Index));

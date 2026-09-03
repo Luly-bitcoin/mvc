@@ -9,7 +9,8 @@ namespace mvc.Models
         public DateTime FechaHasta { get; set; }
         public decimal MontoDiario { get; set; }
         public int Activo { get; set; } = 1;
-        public int CreadoPorUserId { get; set; }
+
+        public int? CreadoPorUserId { get; set; }
         public int? TerminadoPorUserId { get; set; }
 
         public string? InmuebleDireccion { get; set; }
