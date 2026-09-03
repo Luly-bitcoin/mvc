@@ -21,7 +21,7 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 
 ![DER](./docs/DER.png)
 
-## ⚙️ Base de Datos
+## Base de Datos
 
 **Crear la base de datos:**
 
@@ -32,7 +32,7 @@ Sistema web para la gestión de alquileres temporarios de una inmobiliaria.
 
 ---
 
-## 💻 Ejecución
+## Ejecución
 
 1. Clonar el repositorio.
 2. Abrir la solución en Visual Studio.
