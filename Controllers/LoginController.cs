@@ -33,13 +33,15 @@ namespace mvc.Controllers
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
             HttpContext.Session.SetString("NombreUsuario", usuario.NombreUsuario);
 
-            if (usuario.Avatar != null)
+            if (!string.IsNullOrEmpty(usuario.Avatar))
             {
                 HttpContext.Session.SetString("Avatar", usuario.Avatar);
             }
 
             return RedirectToAction("Index", "Home");
         }
+
+
 
         [HttpGet]
         public IActionResult CrearUsuario()
@@ -57,7 +59,8 @@ namespace mvc.Controllers
 
             if (avatar != null && avatar.Length > 0)
             {
-                var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(avatar.FileName);
+                var nombreArchivo = Guid.NewGuid().ToString()
+                    + Path.GetExtension(avatar.FileName);
 
                 var carpeta = Path.Combine(
                     Directory.GetCurrentDirectory(),
@@ -83,6 +86,8 @@ namespace mvc.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         public IActionResult Perfil()
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
@@ -102,6 +107,8 @@ namespace mvc.Controllers
 
             return View(usuario);
         }
+
+
 
         [HttpGet]
         public IActionResult Editar()
@@ -124,13 +131,16 @@ namespace mvc.Controllers
             return View(usuario);
         }
 
+
+
         [HttpPost]
         public IActionResult Editar(
             Usuario usuario,
             IFormFile? avatar,
-            string contraseñaActual,
-            string nuevaContraseña,
-            string confirmarContraseña)
+            bool eliminarAvatar,
+            string? contraseñaActual,
+            string? nuevaContraseña,
+            string? confirmarContraseña)
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
@@ -152,6 +162,7 @@ namespace mvc.Controllers
             usuario.Rol = usuarioActual.Rol;
 
             usuario.Avatar = usuarioActual.Avatar;
+
 
 
             bool quiereCambiarContraseña =
@@ -199,8 +210,25 @@ namespace mvc.Controllers
             }
 
 
+
+            if (eliminarAvatar)
+            {
+                EliminarArchivoAvatar(usuarioActual.Avatar);
+
+                usuario.Avatar = null;
+
+                HttpContext.Session.Remove("Avatar");
+            }
+
+
+
             if (avatar != null && avatar.Length > 0)
             {
+                if (!string.IsNullOrEmpty(usuarioActual.Avatar))
+                {
+                    EliminarArchivoAvatar(usuarioActual.Avatar);
+                }
+
                 var nombreArchivo = Guid.NewGuid().ToString()
                     + Path.GetExtension(avatar.FileName);
 
@@ -213,24 +241,43 @@ namespace mvc.Controllers
 
                 Directory.CreateDirectory(carpeta);
 
-                var rutaCompleta = Path.Combine(carpeta, nombreArchivo);
+                var rutaCompleta = Path.Combine(
+                    carpeta,
+                    nombreArchivo
+                );
 
-                using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+                using (var stream = new FileStream(
+                    rutaCompleta,
+                    FileMode.Create))
                 {
                     avatar.CopyTo(stream);
                 }
 
-                usuario.Avatar = "/uploads/avatars/" + nombreArchivo;
+                usuario.Avatar =
+                    "/uploads/avatars/" + nombreArchivo;
+
+                HttpContext.Session.SetString(
+                    "Avatar",
+                    usuario.Avatar
+                );
             }
 
+
+
             _repositorioUsuario.Modificacion(usuario);
+
 
             HttpContext.Session.SetString(
                 "NombreUsuario",
                 usuario.NombreUsuario
             );
 
-            if (usuario.Avatar != null)
+
+            if (string.IsNullOrEmpty(usuario.Avatar))
+            {
+                HttpContext.Session.Remove("Avatar");
+            }
+            else
             {
                 HttpContext.Session.SetString(
                     "Avatar",
@@ -238,9 +285,44 @@ namespace mvc.Controllers
                 );
             }
 
+
             return RedirectToAction("Perfil");
         }
 
+
+
+        private void EliminarArchivoAvatar(string? avatar)
+        {
+            if (string.IsNullOrEmpty(avatar))
+            {
+                return;
+            }
+
+            if (!avatar.StartsWith("/uploads/avatars/"))
+            {
+                return;
+            }
+
+            var nombreArchivo = Path.GetFileName(avatar);
+
+            if (string.IsNullOrEmpty(nombreArchivo))
+            {
+                return;
+            }
+
+            var rutaArchivo = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "uploads",
+                "avatars",
+                nombreArchivo
+            );
+
+            if (System.IO.File.Exists(rutaArchivo))
+            {
+                System.IO.File.Delete(rutaArchivo);
+            }
+        }
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
