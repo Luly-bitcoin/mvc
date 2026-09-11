@@ -1,4 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSession();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -7,7 +8,8 @@ builder.Services.AddScoped<mvc.Repositories.IRepositorioInquilino, mvc.Repositor
 builder.Services.AddScoped<mvc.Repositories.IRepositorioInmueble, mvc.Repositories.RepositorioInmueble>();
 builder.Services.AddScoped<mvc.Repositories.IRepositorioTipoInmueble, mvc.Repositories.RepositorioTipoInmueble>();
 builder.Services.AddScoped<mvc.Repositories.IRepositorioReserva, mvc.Repositories.RepositorioReserva>();
-var app = builder.Build();
+builder.Services.AddScoped<mvc.Repositorios.IRepositorioUsuario, mvc.Repositorios.RepositorioUsuario>();var app = builder.Build();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -26,7 +28,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Login}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

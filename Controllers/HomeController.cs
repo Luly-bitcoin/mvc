@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
+using mvc.Filters;
 
 namespace mvc.Controllers;
-
+[SesionUsuario]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

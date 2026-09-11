@@ -4,9 +4,11 @@ using mvc.Models;
 using mvc.Repositories;
 using System;
 using System.Linq;
+using mvc.Filters;
 
 namespace mvc.Controllers
 {
+    [SesionUsuario]
     public class ReservasController : Controller
     {
         private readonly IRepositorioReserva repositorioReserva;

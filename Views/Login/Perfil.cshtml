@@ -1,0 +1,83 @@
+@model mvc.Models.Usuario
+
+@{
+    ViewData["Title"] = "Mi perfil";
+}
+
+<div class="perfil-page">
+
+    <div class="perfil-card">
+
+        <h1>MI PERFIL</h1>
+
+        <div class="perfil-avatar-container">
+
+            @if (!string.IsNullOrEmpty(Model.Avatar))
+            {
+                <img src="@Model.Avatar"
+                     alt="Avatar"
+                     class="perfil-avatar" />
+            }
+            else
+            {
+                <div class="perfil-avatar perfil-avatar-default">
+                    👤
+                </div>
+            }
+
+        </div>
+
+        <div class="perfil-datos">
+
+            <div class="perfil-dato">
+                <span>Nombre de usuario</span>
+                <strong>@Model.NombreUsuario</strong>
+            </div>
+
+            <div class="perfil-dato">
+                <span>Nombre</span>
+                <strong>@Model.Nombre</strong>
+            </div>
+
+            <div class="perfil-dato">
+                <span>Apellido</span>
+                <strong>@Model.Apellido</strong>
+            </div>
+
+            <div class="perfil-dato">
+                <span>Email</span>
+                <strong>@Model.Email</strong>
+            </div>
+
+            <div class="perfil-dato">
+                <span>Rol</span>
+                <strong>@Model.Rol</strong>
+            </div>
+
+        </div>
+
+        <div class="perfil-botones">
+
+            <a asp-controller="Login"
+               asp-action="Editar"
+               class="btn btn-primary">
+                Editar
+            </a>
+
+            <a asp-controller="Login"
+               asp-action="Logout"
+               class="btn btn-danger">
+                Cerrar sesión
+            </a>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-secondary">
+                Volver
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

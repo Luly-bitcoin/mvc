@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
 using mvc.Repositories;
+using mvc.Filters;
 
 namespace mvc.Controllers
 {
+    [SesionUsuario]
     public class TiposInmuebleController : Controller
     {
         private readonly IRepositorioTipoInmueble repositorio;

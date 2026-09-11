@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
 using mvc.Repositories;
+using mvc.Filters;
 
 namespace mvc.Controllers
 {
+    [SesionUsuario]
     public class PropietariosController : Controller
     {
         private readonly IRepositorioPropietario _repositorio;

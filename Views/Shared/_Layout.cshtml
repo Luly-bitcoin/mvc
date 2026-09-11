@@ -10,70 +10,106 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-custom shadow-sm mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand navbar-logo"
-                asp-controller="Home"
-                asp-action="Index">
-                    INMOBILIARIA
-            </a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="Home"
-                           asp-action="Index">
-                            Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="Inquilinos"
-                           asp-action="Index">
-                            Inquilinos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="Propietarios"
-                           asp-action="Index">
-                            Propietarios
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="Inmuebles"
-                           asp-action="Index">
-                            Inmuebles
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="TiposInmueble"
-                           asp-action="Index">
-                            Tipos de Inmueble
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                           asp-controller="Reservas"
-                           asp-action="Index">
-                            Reservas
-                        </a>
-                    </li>
-                </ul>
+    @if (Context.Session.GetInt32("UsuarioId") != null)
+    {
+        <nav class="navbar navbar-expand-sm navbar-custom shadow-sm mb-4">
+            <div class="container-fluid">
+
+                <a class="navbar-brand perfil-navbar"
+                   asp-controller="Login"
+                   asp-action="Perfil">
+
+                    @{
+                        var avatar = Context.Session.GetString("Avatar");
+                        var nombreUsuario = Context.Session.GetString("NombreUsuario");
+                    }
+
+                    @if (!string.IsNullOrEmpty(avatar))
+                    {
+                        <img src="@avatar"
+                             alt="Avatar"
+                             class="avatar-navbar" />
+                    }
+                    else
+                    {
+                        <div class="avatar-navbar avatar-default">
+                            👤
+                        </div>
+                    }
+
+                    <span class="nombre-usuario-navbar">
+                        @nombreUsuario
+                    </span>
+
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Inicio
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Inquilinos"
+                               asp-action="Index">
+                                Inquilinos
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Propietarios"
+                               asp-action="Index">
+                                Propietarios
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Inmuebles"
+                               asp-action="Index">
+                                Inmuebles
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="TiposInmueble"
+                               asp-action="Index">
+                                Tipos de Inmueble
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-controller="Reservas"
+                               asp-action="Index">
+                                Reservas
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
             </div>
-        </div>
-    </nav>
+        </nav>
+    }
 </header>
     <div class="container">
         <main role="main" class="pb-3">

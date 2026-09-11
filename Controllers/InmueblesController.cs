@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using mvc.Filters;
 namespace mvc.Controllers
 {
+    [SesionUsuario]
     public class InmueblesController : Controller
     {
         private readonly IRepositorioInmueble repositorioInmueble;

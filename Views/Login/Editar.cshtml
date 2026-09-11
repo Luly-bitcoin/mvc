@@ -1,0 +1,172 @@
+@model mvc.Models.Usuario
+
+@{
+    ViewData["Title"] = "Editar perfil";
+}
+
+<div class="perfil-page">
+
+    <div class="perfil-card">
+
+        <h1>EDITAR PERFIL</h1>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values
+                    .SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form asp-controller="Login"
+              asp-action="Editar"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div class="perfil-avatar-container">
+
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img src="@Model.Avatar"
+                         alt="Avatar actual"
+                         class="perfil-avatar" />
+                }
+                else
+                {
+                    <div class="perfil-avatar perfil-avatar-default">
+                        👤
+                    </div>
+                }
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cambiar avatar</label>
+
+                <input type="file"
+                       name="avatar"
+                       class="form-control"
+                       accept="image/*" />
+
+                <small class="text-muted">
+                    Este campo es opcional.
+                </small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NombreUsuario" class="form-label">
+                    Nombre de usuario
+                </label>
+
+                <input asp-for="NombreUsuario"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label">
+                    Nombre
+                </label>
+
+                <input asp-for="Nombre"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Apellido" class="form-label">
+                    Apellido
+                </label>
+
+                <input asp-for="Apellido"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">
+                    Email
+                </label>
+
+                <input asp-for="Email"
+                       type="email"
+                       class="form-control"
+                       required />
+            </div>
+
+            <div class="password-section">
+
+                <h3>Cambiar contraseña</h3>
+
+                <p class="text-muted">
+                    Dejá los campos vacíos si no querés cambiar tu contraseña.
+                </p>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Contraseña actual
+                    </label>
+
+                    <input type="password"
+                        name="contraseñaActual"
+                        class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Nueva contraseña
+                    </label>
+
+                    <input type="password"
+                        name="nuevaContraseña"
+                        class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Confirmar nueva contraseña
+                    </label>
+
+                    <input type="password"
+                        name="confirmarContraseña"
+                        class="form-control" />
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Rol</label>
+
+                <input type="text"
+                       class="form-control"
+                       value="@Model.Rol"
+                       disabled />
+
+                <small class="text-muted">
+                    El rol no puede modificarse desde el perfil.
+                </small>
+            </div>
+
+            <div class="perfil-botones">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Guardar cambios
+                </button>
+
+                <a asp-controller="Login"
+                   asp-action="Perfil"
+                   class="btn btn-outline-secondary">
+                    Volver
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
