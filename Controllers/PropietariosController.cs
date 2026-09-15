@@ -82,6 +82,7 @@ public IActionResult Index(int pagina = 1)
         }
 
         [HttpGet]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Delete(int id)
         {
             var propietario = _repositorio.ObtenerPorId(id);
@@ -93,6 +94,7 @@ public IActionResult Index(int pagina = 1)
         }
 
         [HttpPost, ActionName("Delete")]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repositorio.Baja(id);

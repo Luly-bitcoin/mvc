@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
 using mvc.Repositories;
 using System;
+using mvc.Filters;
 
 namespace mvc.Controllers
 {
+    [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
     public class UsuariosController : Controller
     {
         private readonly IRepositorioUsuario _repositorio;
@@ -18,12 +20,12 @@ namespace mvc.Controllers
         {
             var rol = HttpContext.Session.GetString("Rol");
 
-            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("ADMINISTRADOR", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var usuarios = _repositorio.ObtenerTodos(); 
+            var usuarios = _repositorio.ObtenerTodos();
             ViewBag.PaginaActual = pagina;
             return View(usuarios);
         }
@@ -32,7 +34,7 @@ namespace mvc.Controllers
         public IActionResult Edit(int id)
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("ADMINISTRADOR", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -50,7 +52,7 @@ namespace mvc.Controllers
         public IActionResult Edit(int id, Usuario usuario)
         {
             var rol = HttpContext.Session.GetString("Rol");
-            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("ADMINISTRADOR", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToAction("Index", "Home");
             }

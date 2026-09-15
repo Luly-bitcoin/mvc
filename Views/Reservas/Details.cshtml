@@ -1,3 +1,4 @@
+@using System.Runtime.CompilerServices
 @model mvc.Models.Reserva
 
 @{
@@ -57,10 +58,22 @@
                     }
                     <strong>@total.ToString("C") (@dias días)</strong>
                 </div>
-                <div class="property-info-item">
-                    <span>Usuario Creador (ID)</span>
-                    <strong>@Model.CreadoPorUserId</strong>
-                </div>
+                @if (Context.Session.GetString("Rol") == "ADMINISTRADOR")
+                {
+                    <div class="property-info-item">
+                        <span>Auditoría</span>
+                        <strong>
+                            Usuario creador: @Model.CreadoPorUserId
+                        </strong>
+
+                        @if (Model.TerminadoPorUserId.HasValue)
+                            {
+                                <strong>
+                                    Usuario que terminó: @Model.TerminadoPorUserId  
+                                </strong>
+                            }
+                    </div>
+                }
             </div>
 
             <div class="property-actions mt-4">

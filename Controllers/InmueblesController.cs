@@ -254,6 +254,7 @@ namespace mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Delete(int id)
         {
             var inmueble = repositorioInmueble.ObtenerPorId(id);
@@ -268,6 +269,7 @@ namespace mvc.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult DeleteConfirmed(int id)
         {
             repositorioInmueble.Baja(id);

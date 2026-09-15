@@ -96,6 +96,7 @@ namespace mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Anular(int id)
         {
             int? userId = HttpContext.Session.GetInt32("UsuarioId");

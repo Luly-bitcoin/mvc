@@ -123,11 +123,14 @@
                                         Editar
                                     </a>
 
-                                    <a asp-action="Delete"
-                                       asp-route-id="@inmueble.Id"
-                                       class="btn-action btn-delete">
-                                        Eliminar
-                                    </a>
+                                    @if (Context.Session.GetString("Rol") == "ADMINISTRADOR")
+                                    {
+                                        <a asp-action="Delete"
+                                           asp-route-id="@inmueble.Id"
+                                           class="btn-action btn-delete">
+                                            Eliminar
+                                        </a>
+                                    }
 
                                 </div>
 

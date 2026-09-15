@@ -86,6 +86,7 @@ namespace mvc.Controllers
         }
 
         [HttpGet]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Delete(int id)
         {
             var inquilino = _repositorio.ObtenerPorId(id);
@@ -99,6 +100,7 @@ namespace mvc.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult DeleteConfirmed(int id)
         {
             _repositorio.Baja(id);

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
 using mvc.Repositories;
+using mvc.Filters;
 
 namespace mvc.Controllers
 {
@@ -15,6 +16,10 @@ namespace mvc.Controllers
 
         [HttpGet]
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult AccesoDenegado()
         {
             return View();
         }
@@ -43,12 +48,14 @@ namespace mvc.Controllers
         }
 
         [HttpGet]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult CrearUsuario()
         {
             return View();
         }
 
         [HttpPost]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult CrearUsuario(Usuario usuario, IFormFile? avatar)
         {
             if (!ModelState.IsValid)
@@ -85,6 +92,7 @@ namespace mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        
         public IActionResult Perfil()
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");

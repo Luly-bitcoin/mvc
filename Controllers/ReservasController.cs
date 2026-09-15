@@ -113,6 +113,8 @@ namespace mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Delete(int id)
         {
             var reserva = repositorioReserva.ObtenerPorId(id);
@@ -125,6 +127,7 @@ namespace mvc.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult DeleteConfirmed(int id)
         {
             repositorioReserva.Baja(id);
