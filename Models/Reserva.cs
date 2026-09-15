@@ -1,3 +1,5 @@
+using System;
+
 namespace mvc.Models
 {
     public class Reserva
@@ -7,12 +9,11 @@ namespace mvc.Models
         public int IdInquilino { get; set; }
         public DateTime FechaDesde { get; set; }
         public DateTime FechaHasta { get; set; }
+        public DateTime? FechaTerminacion { get; set; }
         public decimal MontoDiario { get; set; }
         public int Activo { get; set; } = 1;
-
         public int? CreadoPorUserId { get; set; }
         public int? TerminadoPorUserId { get; set; }
-
         public string? InmuebleDireccion { get; set; }
         public string? InquilinoNombre { get; set; }
     }

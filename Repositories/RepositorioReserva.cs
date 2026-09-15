@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using mvc.Models;
 using MySqlConnector;
 using System;
@@ -132,10 +133,10 @@ namespace mvc.Repositories
             string sql = @"
                 INSERT INTO reserva (
                     id_inmueble, id_inquilino, fecha_desde, fecha_hasta, 
-                    monto_diario, activo
+                    monto_diario, activo, creado_por_user_id
                 ) VALUES (
                     @id_inmueble, @id_inquilino, @fecha_desde, @fecha_hasta, 
-                    @monto_diario, @activo
+                    @monto_diario, @activo, @creado_por_user_id
                 );
             ";
 
@@ -147,9 +148,11 @@ namespace mvc.Repositories
             command.Parameters.AddWithValue("@fecha_hasta", reserva.FechaHasta);
             command.Parameters.AddWithValue("@monto_diario", reserva.MontoDiario);
             command.Parameters.AddWithValue("@activo", reserva.Activo);
+            command.Parameters.AddWithValue("@creado_por_user_id", (object?)reserva.CreadoPorUserId ?? DBNull.Value);
 
             command.ExecuteNonQuery();
         }
+
         public void Modificacion(Reserva reserva)
         {
             using var connection = new MySqlConnection(connectionString);
@@ -238,4 +241,4 @@ namespace mvc.Repositories
             };
         }
     }
-}  
+}

@@ -53,6 +53,15 @@ namespace mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Reserva reserva)
         {
+            int? userId = HttpContext.Session.GetInt32("UsuarioId");
+            if (!userId.HasValue)
+            {
+                return RedirectToAction("Login", "Usuarios");
+            }
+
+            reserva.CreadoPorUserId = userId.Value;
+            reserva.Activo = 1;
+
             if (!repositorioReserva.ValidarDisponibilidad(reserva.IdInmueble, reserva.FechaDesde, reserva.FechaHasta))
             {
                 ModelState.AddModelError(string.Empty, "El inmueble seleccionado ya se encuentra reservado en esas fechas.");
@@ -63,8 +72,6 @@ namespace mvc.Controllers
                 CargarDesplegables(reserva.IdInmueble, reserva.IdInquilino);
                 return View(reserva);
             }
-
-            reserva.Activo = 1;
 
             repositorioReserva.Alta(reserva);
             return RedirectToAction(nameof(Index));

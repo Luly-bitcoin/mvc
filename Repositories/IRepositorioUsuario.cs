@@ -1,21 +1,16 @@
+using System.Collections.Generic;
 using mvc.Models;
 
-namespace mvc.Repositorios
+namespace mvc.Repositories
 {
     public interface IRepositorioUsuario
     {
         Usuario? ObtenerPorEmail(string email);
-
         Usuario? ObtenerPorNombreUsuario(string nombreUsuario);
-
         Usuario? ObtenerPorId(int id);
-
         List<Usuario> ObtenerTodos();
-
         int Alta(Usuario usuario);
-
         int Modificacion(Usuario usuario);
-
         int Baja(int id);
     }
 }

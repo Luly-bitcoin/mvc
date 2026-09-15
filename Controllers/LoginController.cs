@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
-using mvc.Repositorios;
+using mvc.Repositories;
 
 namespace mvc.Controllers
 {
@@ -32,6 +32,7 @@ namespace mvc.Controllers
 
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
             HttpContext.Session.SetString("NombreUsuario", usuario.NombreUsuario);
+            HttpContext.Session.SetString("Rol", usuario.Rol);
 
             if (!string.IsNullOrEmpty(usuario.Avatar))
             {
@@ -40,8 +41,6 @@ namespace mvc.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-
 
         [HttpGet]
         public IActionResult CrearUsuario()
@@ -86,8 +85,6 @@ namespace mvc.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public IActionResult Perfil()
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
@@ -107,8 +104,6 @@ namespace mvc.Controllers
 
             return View(usuario);
         }
-
-
 
         [HttpGet]
         public IActionResult Editar()
@@ -130,8 +125,6 @@ namespace mvc.Controllers
 
             return View(usuario);
         }
-
-
 
         [HttpPost]
         public IActionResult Editar(
@@ -158,12 +151,8 @@ namespace mvc.Controllers
             }
 
             usuario.Id = usuarioId.Value;
-
             usuario.Rol = usuarioActual.Rol;
-
             usuario.Avatar = usuarioActual.Avatar;
-
-
 
             bool quiereCambiarContraseña =
                 !string.IsNullOrWhiteSpace(contraseñaActual) ||
@@ -209,18 +198,12 @@ namespace mvc.Controllers
                 usuario.Password = usuarioActual.Password;
             }
 
-
-
             if (eliminarAvatar)
             {
                 EliminarArchivoAvatar(usuarioActual.Avatar);
-
                 usuario.Avatar = null;
-
                 HttpContext.Session.Remove("Avatar");
             }
-
-
 
             if (avatar != null && avatar.Length > 0)
             {
@@ -262,16 +245,12 @@ namespace mvc.Controllers
                 );
             }
 
-
-
             _repositorioUsuario.Modificacion(usuario);
-
 
             HttpContext.Session.SetString(
                 "NombreUsuario",
                 usuario.NombreUsuario
             );
-
 
             if (string.IsNullOrEmpty(usuario.Avatar))
             {
@@ -285,11 +264,8 @@ namespace mvc.Controllers
                 );
             }
 
-
             return RedirectToAction("Perfil");
         }
-
-
 
         private void EliminarArchivoAvatar(string? avatar)
         {
@@ -323,10 +299,10 @@ namespace mvc.Controllers
                 System.IO.File.Delete(rutaArchivo);
             }
         }
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-
             return RedirectToAction("Index", "Login");
         }
     }

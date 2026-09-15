@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc.Models;
-using mvc.Repositorios;
+using mvc.Repositories;
+using System;
 
 namespace mvc.Controllers
 {
@@ -13,41 +14,70 @@ namespace mvc.Controllers
             _repositorio = repositorio;
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        public IActionResult Index(int pagina = 1)
         {
-            return View();
+            var rol = HttpContext.Session.GetString("Rol");
+
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var usuarios = _repositorio.ObtenerTodos(); 
+            ViewBag.PaginaActual = pagina;
+            return View(usuarios);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var usuario = _repositorio.ObtenerPorId(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Usuario usuario)
         {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            var rol = HttpContext.Session.GetString("Rol");
+            if (string.IsNullOrEmpty(rol) || !rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
             {
-                ViewBag.Error = "Debe ingresar email y contraseña.";
-                return View();
+                return RedirectToAction("Index", "Home");
             }
 
-            var usuario = _repositorio.ObtenerPorEmail(email);
-
-            if (usuario == null || usuario.Password != password)
+            if (id != usuario.Id)
             {
-                ViewBag.Error = "Email o contraseña incorrectos.";
-                return View();
+                return NotFound();
             }
 
-            HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
-            HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
-            HttpContext.Session.SetString("UsuarioRol", usuario.Rol);
+            if (!ModelState.IsValid)
+            {
+                return View(usuario);
+            }
 
-            return RedirectToAction("Index", "Home");
-        }
+            var usuarioActual = _repositorio.ObtenerPorId(id);
+            if (usuarioActual != null)
+            {
+                usuario.Rol = usuarioActual.Rol;
+                usuario.Avatar = usuarioActual.Avatar;
+                if (string.IsNullOrEmpty(usuario.Password))
+                {
+                    usuario.Password = usuarioActual.Password;
+                }
+            }
 
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-
-            return RedirectToAction("Login");
+            _repositorio.Modificacion(usuario);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

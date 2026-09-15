@@ -65,6 +65,7 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
+                                    <a asp-controller="Pagos" asp-action="Index" asp-route-idReserva="@reserva.Id" class="btn-action" style="background-color: #17a2b8; color: white;" title="Ver Pagos">Pagos</a>
                                     <a asp-action="Details" asp-route-id="@reserva.Id" class="btn-action btn-view">Ver</a>
                                     <a asp-action="Edit" asp-route-id="@reserva.Id" class="btn-action btn-edit">Editar</a>
                                     <a asp-action="Delete" asp-route-id="@reserva.Id" class="btn-action btn-delete">Eliminar</a>

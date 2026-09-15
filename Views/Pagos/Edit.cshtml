@@ -1,0 +1,40 @@
+@model mvc.Models.Pago
+
+@{
+    ViewData["Title"] = "Editar Pago";
+}
+
+<div class="management-page">
+    <div class="page-header">
+        <h1>Editar Concepto de Pago</h1>
+    </div>
+
+    <div class="data-card p-4" style="max-width: 600px;">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="IdReserva" />
+
+            <div class="mb-3">
+                <label class="form-label">Fecha del Pago</label>
+                <input type="text" class="form-control-custom w-100" value="@Model.Fecha.ToString("dd/MM/yyyy")" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Importe</label>
+                <input type="text" class="form-control-custom w-100" value="@Model.Importe.ToString("C")" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Concepto" class="form-label">Concepto</label>
+                <input asp-for="Concepto" class="form-control-custom w-100" />
+                <span asp-validation-for="Concepto" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn-primary-custom">Guardar Cambios</button>
+                <a asp-action="Index" asp-route-idReserva="@Model.IdReserva" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

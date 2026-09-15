@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using mvc.Models;
 
-namespace mvc.Repositorios
+namespace mvc.Repositories
 {
     public class RepositorioUsuario : IRepositorioUsuario
     {

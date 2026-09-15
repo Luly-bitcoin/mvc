@@ -104,6 +104,25 @@
                             </a>
                         </li>
 
+                        @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR" || Context.Session.GetString("UsuarioRol")?.ToUpper() == "ADMINISTRADOR")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold"
+                                   asp-controller="Usuarios"
+                                   asp-action="Index">
+                                    Usuarios
+                                </a>
+                            </li>
+                        }
+
+                        <li class="nav-item ms-3">
+                            <a class="btn btn-outline-danger btn-sm mt-1"
+                               asp-controller="Usuarios"
+                               asp-action="Logout">
+                                Salir
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
 
