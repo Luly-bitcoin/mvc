@@ -63,7 +63,10 @@
                             <td class="actions">
                                 <a asp-action="Details" asp-route-id="@item.Id" class="action-btn view" title="Ver detalles">Ver</a>
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="action-btn edit" title="Editar">Editar</a>
-                                <button type="button" class="action-btn delete" onclick="confirmarEliminacion(@item.Id)" title="Eliminar">Eliminar</button>
+                                @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR")
+                                {
+                                    <button type="button" class="action-btn delete" onclick="confirmarEliminacion(@item.Id)" title="Eliminar">Eliminar</button>
+                                }
                             </td>
                         </tr>
                     }

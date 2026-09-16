@@ -4,37 +4,283 @@
     ViewData["Title"] = "Editar Usuario";
 }
 
-<h2>Editar Usuario</h2>
+<div class="perfil-page">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="perfil-card">
+
+        <h1>EDITAR USUARIO</h1>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form asp-controller="Usuarios"
+              asp-action="Edit"
+              method="post"
+              enctype="multipart/form-data">
+
             <input type="hidden" asp-for="Id" />
-            
-            <div class="form-group mb-3">
-                <label asp-for="NombreUsuario" class="control-label"></label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+
+            <div class="perfil-avatar-container">
+
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img id="avatarPreview"
+                         src="@Model.Avatar"
+                         alt="Avatar actual"
+                         class="perfil-avatar" />
+                }
+                else
+                {
+                    <div id="avatarPreview"
+                         class="perfil-avatar perfil-avatar-default">
+                        👤
+                    </div>
+                }
+
+                <div class="avatar-botones">
+
+                    <label for="avatarInput"
+                           class="avatar-btn avatar-btn-agregar">
+
+                        @(string.IsNullOrEmpty(Model.Avatar)
+                            ? "Agregar foto"
+                            : "Cambiar foto")
+
+                    </label>
+
+                    <input type="file"
+                           id="avatarInput"
+                           name="avatar"
+                           accept="image/*"
+                           hidden />
+
+                    @if (!string.IsNullOrEmpty(Model.Avatar))
+                    {
+                        <button type="submit"
+                                name="eliminarAvatar"
+                                value="true"
+                                class="avatar-btn avatar-btn-eliminar">
+
+                            Eliminar foto
+
+                        </button>
+                    }
+
+                </div>
+
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+
+            <div class="usuario-editar">
+
+                <div class="usuario-editar-contenido">
+
+                    <div class="usuario-editar-titulo">
+                        Nombre de usuario
+                    </div>
+
+                    <input asp-for="NombreUsuario"
+                           class="form-control usuario-input"
+                           required />
+
+                    <span asp-validation-for="NombreUsuario"
+                          class="text-danger"></span>
+
+                </div>
+
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label">Contraseña</label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+
+            <div class="perfil-separador">
+
+                <div class="perfil-datos">
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label asp-for="Nombre">
+                            Nombre
+                        </label>
+
+                        <input asp-for="Nombre"
+                               class="form-control"
+                               required />
+
+                        <span asp-validation-for="Nombre"
+                              class="text-danger"></span>
+
+                    </div>
+
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label asp-for="Apellido">
+                            Apellido
+                        </label>
+
+                        <input asp-for="Apellido"
+                               class="form-control"
+                               required />
+
+                        <span asp-validation-for="Apellido"
+                              class="text-danger"></span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="perfil-datos">
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label asp-for="Email">
+                            Email
+                        </label>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control"
+                               required />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+
+                    </div>
+
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label asp-for="Rol">
+                            Rol
+                        </label>
+
+                        <select asp-for="Rol"
+                                class="form-control"
+                                required>
+
+                            <option value="ADMINISTRADOR">
+                                Administrador
+                            </option>
+
+                            <option value="EMPLEADO">
+                                Empleado
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Rol"
+                              class="text-danger"></span>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+
+            <div class="password-section">
+
+                <h3>Cambiar contraseña</h3>
+
+                <p>
+                    Dejá los campos vacíos si no querés cambiar la contraseña.
+                </p>
+
+                <div class="password-grid">
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label>
+                            Nueva contraseña
+                        </label>
+
+                        <input type="password"
+                               name="nuevaContraseña"
+                               class="form-control" />
+
+                    </div>
+
+
+                    <div class="perfil-dato perfil-dato-editar">
+
+                        <label>
+                            Confirmar nueva contraseña
+                        </label>
+
+                        <input type="password"
+                               name="confirmarContraseña"
+                               class="form-control" />
+
+                    </div>
+
+                </div>
+
             </div>
+
+
+            <div class="perfil-botones">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Guardar cambios
+
+                </button>
+
+                <a asp-controller="Usuarios"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    Volver
+
+                </a>
+
+            </div>
+
         </form>
+
     </div>
+
 </div>
+
+
+<script>
+
+    document.getElementById("avatarInput").addEventListener("change", function (event) {
+
+        const archivo = event.target.files[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        const url = URL.createObjectURL(archivo);
+
+        const preview = document.getElementById("avatarPreview");
+
+        if (preview.tagName === "IMG") {
+
+            preview.src = url;
+
+        } else {
+
+            const nuevaImagen = document.createElement("img");
+
+            nuevaImagen.id = "avatarPreview";
+            nuevaImagen.src = url;
+            nuevaImagen.alt = "Nueva foto de perfil";
+            nuevaImagen.className = "perfil-avatar";
+
+            preview.replaceWith(nuevaImagen);
+        }
+
+    });
+
+</script>

@@ -60,7 +60,10 @@
                                     {
                                         <form asp-action="Anular" asp-route-id="@item.Id" method="post" style="display:inline;">
                                             @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn-action btn-delete" onclick="return confirm('¿Estás seguro de anular este pago?');">Anular</button>
+                                            @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR")
+                                            {
+                                                <button type="submit" class="btn-action btn-delete" onclick="return confirm('¿Estás seguro de anular este pago?');">Anular</button>
+                                            }
                                         </form>
                                     }
                                 </div>

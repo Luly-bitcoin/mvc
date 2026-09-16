@@ -49,17 +49,30 @@ namespace mvc.Controllers
 
         [HttpGet]
         [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult CrearUsuario()
+        public IActionResult CrearUsuario(bool desdeUsuarios = false)
         {
+            ViewBag.DesdeUsuarios = desdeUsuarios;
+
             return View();
         }
 
         [HttpPost]
         [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult CrearUsuario(Usuario usuario, IFormFile? avatar)
+        public IActionResult CrearUsuario(
+            Usuario usuario,
+            IFormFile? avatar,
+            bool desdeUsuarios = false)
         {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             if (!ModelState.IsValid)
             {
+                ViewBag.DesdeUsuarios = desdeUsuarios;
                 return View(usuario);
             }
 
@@ -79,7 +92,9 @@ namespace mvc.Controllers
 
                 var rutaCompleta = Path.Combine(carpeta, nombreArchivo);
 
-                using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+                using (var stream = new FileStream(
+                    rutaCompleta,
+                    FileMode.Create))
                 {
                     avatar.CopyTo(stream);
                 }
@@ -89,8 +104,15 @@ namespace mvc.Controllers
 
             _repositorioUsuario.Alta(usuario);
 
-            return RedirectToAction("Index");
+            if (desdeUsuarios)
+            {
+                return RedirectToAction("Index", "Usuarios");
+            }
+
+            return RedirectToAction("Index", "Usuarios");
         }
+
+
 
         
         public IActionResult Perfil()

@@ -117,12 +117,15 @@
                                     Editar
                                 </a>
 
-                                <button type="button"
-                                        class="action-btn delete"
-                                        onclick="confirmarEliminacion(@item.Id)"
-                                        title="Eliminar">
-                                    Eliminar
-                                </button>
+                                @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR")
+                                {
+                                    <button type="button"
+                                            class="action-btn delete"
+                                            onclick="confirmarEliminacion(@item.Id)"
+                                            title="Eliminar">
+                                        Eliminar
+                                    </button>
+                                }
 
                             </td>
 

@@ -47,7 +47,10 @@
                             <td>
                                 <div class="action-buttons justify-content-center">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit">Editar</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">Eliminar</a>
+                                    @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR")
+                                    {   
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete">Eliminar</a>
+                                    }
                                 </div>
                             </td>
                         </tr>
