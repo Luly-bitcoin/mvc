@@ -20,14 +20,14 @@
             <div>
                 <h2>Contratos registrados</h2>
             </div>
-            <form asp-action="Index" method="get" class="d-flex gap-2">
-                <input type="text" name="busqueda" class="form-control-custom" placeholder="Buscar dirección o inquilino..." value="@ViewBag.Busqueda" style="width: 250px;" />
-                <button type="submit" class="btn-primary-custom">Buscar</button>
-                @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
-                {
-                    <a asp-action="Index" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Limpiar</a>
-                }
-            </form>
+            <div class="search-box">
+                <span>⌕</span>
+
+                <input type="text"
+                    id="buscadorReservas"
+                    placeholder="Buscar dirección o inquilino..."
+                    value="@ViewBag.Busqueda" />
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table custom-table align-middle mb-0">
@@ -70,7 +70,21 @@
                                     <a asp-action="Edit" asp-route-id="@reserva.Id" class="btn-action btn-edit">Editar</a>
                                     @if (Context.Session.GetString("Rol")?.ToUpper() == "ADMINISTRADOR")
                                     {
-                                        <a asp-action="Delete" asp-route-id="@reserva.Id" class="btn-action btn-delete">Eliminar</a>
+                                        <form asp-action="Delete"
+                                            asp-route-id="@reserva.Id"
+                                            method="post"
+                                            style="display:inline;"
+                                            class="form-eliminar-reserva">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="button"
+                                                    class="action-btn delete"
+                                                    onclick="confirmarEliminacion(this)"
+                                                    title="Eliminar">
+                                                Eliminar
+                                            </button>
+                                        </form>
                                     }
                                 </div>
                             </td>
@@ -95,3 +109,57 @@
         </li>
     </ul>
 </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmarEliminacion(button) {
+
+        Swal.fire({
+            title: '¿Eliminar reserva?',
+            text: 'Esta acción eliminará la reserva de la base de datos.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#607d59',
+            cancelButtonColor: '#c5abaa',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                button.closest('form').submit();
+            }
+
+        });
+    }
+</script>
+
+<script>
+    const buscadorReservas = document.getElementById("buscadorReservas");
+
+    let temporizadorBusqueda;
+
+    buscadorReservas.addEventListener("input", function () {
+
+        clearTimeout(temporizadorBusqueda);
+
+        temporizadorBusqueda = setTimeout(function () {
+
+            const valor = buscadorReservas.value.trim();
+
+            const url = new URL(window.location.href);
+
+            url.searchParams.set("pagina", "1");
+
+            if (valor === "") {
+                url.searchParams.delete("busqueda");
+            } else {
+                url.searchParams.set("busqueda", valor);
+            }
+
+            window.location.href = url.toString();
+
+        }, 300);
+
+    });
+</script>

@@ -11,6 +11,18 @@
 
     if (!string.IsNullOrEmpty(Model.Apellido))
         iniciales += Model.Apellido[0];
+
+    var inmuebles = Model.Inmuebles ?? new List<mvc.Models.Inmueble>();
+
+    var totalInmuebles = inmuebles.Count;
+    var disponibles = inmuebles.Count(i => i.Activo == 1);
+    var noDisponibles = inmuebles.Count(i => i.Activo != 1);
+
+    var reservas = inmuebles
+        .Where(i => i.Reservas != null)
+        .SelectMany(i => i.Reservas!)
+        .OrderByDescending(r => r.FechaDesde)
+        .ToList();
 }
 
 <div class="management-page">
@@ -95,106 +107,206 @@
                 <div class="details-summary-grid">
 
                     <div class="details-summary-item">
-                        <strong>@(Model.Inmuebles?.Count() ?? 0)</strong>
+                        <strong>@totalInmuebles</strong>
                         <span>Inmuebles</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>@(Model.Inmuebles?.Count(i => i.Activo == 1) ?? 0)</strong>
+                        <strong>@disponibles</strong>
                         <span>Disponibles</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>@(Model.Inmuebles?.Count(i => i.Activo != 1) ?? 0)</strong>
+                        <strong>@noDisponibles</strong>
                         <span>No disponibles</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>@(Model.Pagos?.Count() ?? 0)</strong>
-                        <span>Pagos registrados</span>
+                        <strong>@reservas.Count</strong>
+                        <span>Alquileres registrados</span>
                     </div>
 
                 </div>
 
-            </div>
+            </div>  
 
         </div>
-
+        
     </div>
+
 
     <div class="details-history">
 
         <div class="page-header">
             <div>
-                <h1>HISTORIAL</h1>
+                <h1>INMUEBLES Y ALQUILERES</h1>
             </div>
         </div>
 
-        @if (Model.Inmuebles != null && Model.Inmuebles.Any())
+
+        @if (inmuebles.Any())
         {
-            @foreach (var inmueble in Model.Inmuebles)
+            foreach (mvc.Models.Inmueble inmueble in inmuebles)
             {
+                var reservasInmueble = inmueble.Reservas == null
+                    ? new List<mvc.Models.Reserva>()
+                    : inmueble.Reservas
+                        .OrderByDescending(r => r.FechaDesde)
+                        .ToList();
+
                 <div class="data-card history-year">
 
                     <div class="data-card-header">
 
                         <div>
-                            <h2>@DateTime.Now.Year</h2>
+                            <h2>
+                                @inmueble.TipoNombre
+                            </h2>
 
                             <span class="data-count">
-                                Actividad reciente
+                                @inmueble.Direccion
                             </span>
+                        </div>
+
+                        <span class="status-badge @(inmueble.Activo == 1 ? "status-available" : "status-rented")">
+                            @inmueble.Estado.ToUpper()
+                        </span>
+
+                    </div>
+
+
+                    <div class="property-event">
+
+                        <div class="property-event-header">
+
+                            <div>
+                                <h3>
+                                    @inmueble.Direccion
+                                </h3>
+
+                                <span>
+                                    @inmueble.TipoNombre
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="property-event-details">
+
+                            <div>
+                                <small>PRECIO</small>
+
+                                <div>
+                                    $@inmueble.Precio.ToString("N0")
+                                </div>
+                            </div>
+
+                            <div>
+                                <small>ESTADO ACTUAL</small>
+
+                                <div class="payment-ok">
+                                    ✓ @inmueble.Estado
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
 
-                    <div class="history-event">
 
-                        <div class="history-date">
-                            @DateTime.Now.ToString("MMMM yyyy").ToUpper()
-                        </div>
+                    <div style="margin-top: 25px;">
 
-                        <div class="property-event">
+                        <h3 style="margin-bottom: 15px; margin-left: 20px">
+                            Historial de alquileres
+                        </h3>
 
-                            <div class="property-event-header">
+                        @if (reservasInmueble.Any())
+                        {
+                            foreach (var reserva in reservasInmueble)
+                            {
+                                <div class="history-event">
 
-                                <div>
-                                    <h3>
-                                        @inmueble.TipoNombre
-                                    </h3>
+                                    <div class="history-date">
+                                        @reserva.FechaDesde.ToString("dd/MM/yyyy")
+                                    </div>
 
-                                    <span>
-                                        @inmueble.Direccion
-                                    </span>
+                                    <div class="property-event">
+
+                                        <div class="property-event-header">
+
+                                            <div>
+
+                                                <h3>
+                                                    @if (!string.IsNullOrWhiteSpace(reserva.InquilinoNombre))
+                                                    {
+                                                        @reserva.InquilinoNombre
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>
+                                                            Inquilino no disponible
+                                                        </span>
+                                                    }
+                                                </h3>
+
+                                                <span>
+                                                    Reserva #@reserva.Id
+                                                </span>
+
+                                            </div>
+
+                                            <span class="status-badge @(reserva.Activo == 1 ? "status-rented" : "status-available")">
+
+                                                @(reserva.Activo == 1
+                                                    ? "ALQUILER ACTUAL"
+                                                    : "FINALIZADO")
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="property-event-details">
+
+                                            <div>
+
+                                                <small>PERÍODO</small>
+
+                                                <div>
+                                                    @reserva.FechaDesde.ToString("dd/MM/yyyy")
+                                                    →
+                                                    @reserva.FechaHasta.ToString("dd/MM/yyyy")
+                                                </div>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <small>MONTO DIARIO</small>
+
+                                                <div>
+                                                    $@reserva.MontoDiario.ToString("N0")
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="history-empty">
 
-                                <span class="status-badge @(inmueble.Activo == 1 ? "status-available" : "status-rented")">
-                                    @inmueble.Estado.ToUpper()
-                                </span>
+                                Este inmueble todavía no tiene
+                                alquileres registrados.
 
                             </div>
-
-                            <div class="property-event-details">
-
-                                <div>
-                                    <small>PRECIO</small>
-
-                                    <div>
-                                        $@inmueble.Precio.ToString("N0")
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <small>ESTADO</small>
-
-                                    <div class="payment-ok">
-                                        ✓ @inmueble.Estado
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
+                        }
 
                     </div>
 
@@ -205,20 +317,10 @@
         {
             <div class="data-card history-year">
 
-                <div class="data-card-header">
-
-                    <div>
-                        <h2>@DateTime.Now.Year</h2>
-
-                        <span class="data-count">
-                            Historial anterior
-                        </span>
-                    </div>
-
-                </div>
-
                 <div class="history-empty">
-                    No hay movimientos registrados para este período.
+
+                    Este propietario no tiene inmuebles registrados.
+
                 </div>
 
             </div>

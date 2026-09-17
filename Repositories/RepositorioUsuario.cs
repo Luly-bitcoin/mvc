@@ -118,6 +118,60 @@ namespace mvc.Repositories
             return usuarios;
         }
 
+        public IEnumerable<Usuario> ObtenerPaginado(
+            int pagina,
+            int cantidadPorPagina,
+            string? busqueda = null)
+        {
+            var usuarios = new List<Usuario>();
+
+            int offset = (pagina - 1) * cantidadPorPagina;
+
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            string sql = @"
+                SELECT 
+                    id,
+                    nombre_usuario,
+                    nombre,
+                    apellido,
+                    email,
+                    password,
+                    avatar,
+                    rol
+                FROM usuario
+                WHERE
+                    @Busqueda = ''
+                    OR nombre LIKE @Filtro
+                    OR apellido LIKE @Filtro
+                    OR nombre_usuario LIKE @Filtro
+                    OR email LIKE @Filtro
+                    OR rol LIKE @Filtro
+                    OR CONCAT(nombre, ' ', apellido) LIKE @Filtro
+                ORDER BY apellido, nombre
+                LIMIT @Cantidad OFFSET @Offset;
+            ";
+
+            using var command = new MySqlCommand(sql, connection);
+
+            string textoBusqueda = busqueda?.Trim() ?? "";
+
+            command.Parameters.AddWithValue("@Busqueda", textoBusqueda);
+            command.Parameters.AddWithValue("@Filtro", "%" + textoBusqueda + "%");
+            command.Parameters.AddWithValue("@Cantidad", cantidadPorPagina);
+            command.Parameters.AddWithValue("@Offset", offset);
+
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                usuarios.Add(MapearUsuario(reader));
+            }
+
+            return usuarios;
+        }
+
         public int Alta(Usuario usuario)
         {
             using var connection = new MySqlConnection(connectionString);

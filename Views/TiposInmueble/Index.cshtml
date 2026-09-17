@@ -21,14 +21,14 @@
     <div>
         <h2 class="m-0">Tipos registrados</h2>
     </div>
-    <form asp-action="Index" method="get" class="d-flex gap-2 m-0">
-        <input type="text" name="busqueda" class="form-control-custom" placeholder="Buscar tipo..." value="@ViewBag.Busqueda" style="width: 250px;" />
-        <button type="submit" class="btn-primary-custom">Buscar</button>
-        @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
-        {
-            <a asp-action="Index" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Limpiar</a>
-        }
-    </form>
+    <div class="search-box">
+        <span>⌕</span>
+
+        <input type="text"
+            id="buscadorTipos"
+            placeholder="Buscar tipo..."
+            value="@ViewBag.Busqueda" />
+    </div>
 </div>
             <table class="table custom-table align-middle mb-0">
                 <thead>
@@ -64,13 +64,54 @@
 <nav aria-label="Navegacion" class="mt-4">
     <ul class="pagination justify-content-center">
         <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1 })">Anterior</a>
-        </li>
+            <a class="page-link"
+            href="@Url.Action("Index", new {
+                pagina = ViewBag.PaginaActual - 1,
+                busqueda = ViewBag.Busqueda
+            })">
+                Anterior
+            </a>
         <li class="page-item active">
             <span class="page-link">Página @ViewBag.PaginaActual</span>
         </li>
         <li class="page-item @(Model.Count() < 10 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1 })">Siguiente</a>
+            <a class="page-link"
+            href="@Url.Action("Index", new {
+                pagina = ViewBag.PaginaActual + 1,
+                busqueda = ViewBag.Busqueda
+            })">
+                Siguiente
+            </a>
         </li>
     </ul>
 </nav>
+
+<script>
+    const buscadorTipos = document.getElementById("buscadorTipos");
+
+    let temporizador;
+
+    buscadorTipos.addEventListener("input", function () {
+
+        clearTimeout(temporizador);
+
+        temporizador = setTimeout(function () {
+
+            const valor = buscadorTipos.value.trim();
+
+            const url = new URL(window.location.href);
+
+            url.searchParams.set("pagina", "1");
+
+            if (valor === "") {
+                url.searchParams.delete("busqueda");
+            } else {
+                url.searchParams.set("busqueda", valor);
+            }
+
+            window.location.href = url.toString();
+
+        }, 300);
+
+    });
+</script>
