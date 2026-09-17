@@ -14,24 +14,24 @@ namespace mvc.Controllers
         {
             _repositorio = repositorio;
         }
-public IActionResult Index(int pagina = 1)
-{
-    int cantidadPorPagina = 10;
-    
-    var propietarios = _repositorio.ObtenerPaginado(pagina, cantidadPorPagina);
-    
-    ViewBag.PaginaActual = pagina;
-    
-    return View(propietarios);
-}
+
+        public IActionResult Index(int pagina = 1)
+        {
+            int cantidadPorPagina = 10;
+            var propietarios = _repositorio.ObtenerPaginado(pagina, cantidadPorPagina);
+            ViewBag.PaginaActual = pagina;
+            return View(propietarios);
+        }
 
         public IActionResult Details(int id)
         {
             var propietario = _repositorio.ObtenerPorId(id);
+
             if (propietario == null)
             {
                 return NotFound();
             }
+
             return View(propietario);
         }
 
@@ -50,6 +50,7 @@ public IActionResult Index(int pagina = 1)
             }
 
             _repositorio.Alta(propietario);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -57,10 +58,12 @@ public IActionResult Index(int pagina = 1)
         public IActionResult Edit(int id)
         {
             var propietario = _repositorio.ObtenerPorId(id);
+
             if (propietario == null)
             {
                 return NotFound();
             }
+
             return View(propietario);
         }
 
@@ -78,6 +81,7 @@ public IActionResult Index(int pagina = 1)
             }
 
             _repositorio.Modificacion(propietario);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -86,10 +90,12 @@ public IActionResult Index(int pagina = 1)
         public IActionResult Delete(int id)
         {
             var propietario = _repositorio.ObtenerPorId(id);
+
             if (propietario == null)
             {
                 return NotFound();
             }
+
             return View(propietario);
         }
 
@@ -98,6 +104,7 @@ public IActionResult Index(int pagina = 1)
         public IActionResult DeleteConfirmed(int id)
         {
             _repositorio.Baja(id);
+
             return RedirectToAction(nameof(Index));
         }
     }

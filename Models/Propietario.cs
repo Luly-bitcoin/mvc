@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace mvc.Models
@@ -23,5 +24,8 @@ namespace mvc.Models
 
         [RegularExpression(@"^\d+$", ErrorMessage = "El teléfono solo puede contener números.")]
         public string? Telefono { get; set; }
+
+        public ICollection<Inmueble>? Inmuebles { get; set; }
+        public ICollection<Pago>? Pagos { get; set; }
     }
 }

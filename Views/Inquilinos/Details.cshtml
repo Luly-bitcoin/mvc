@@ -1,3 +1,4 @@
+@using System.Linq
 @model mvc.Models.Inquilino
 
 @{
@@ -19,7 +20,6 @@
             ← Volver a inquilinos
         </a>
     </div>
-
 
     <div class="data-card">
 
@@ -44,7 +44,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="details-person-data">
 
@@ -81,7 +80,6 @@
 
             </div>
 
-
             <div class="details-summary">
 
                 <div class="details-summary-header">
@@ -94,26 +92,25 @@
 
                 </div>
 
-
                 <div class="details-summary-grid">
 
                     <div class="details-summary-item">
-                        <strong>3</strong>
+                        <strong>@(Model.Reservas?.Count() ?? 0)</strong>
                         <span>Alquileres</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>1</strong>
+                        <strong>@(Model.Reservas?.Count(r => r.Activo == 1) ?? 0)</strong>
                         <span>Alquiler actual</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>2</strong>
+                        <strong>@(Model.Reservas?.Count(r => r.Activo == 0) ?? 0)</strong>
                         <span>Finalizados</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>12</strong>
+                        <strong>@(Model.Pagos?.Count() ?? 0)</strong>
                         <span>Pagos realizados</span>
                     </div>
 
@@ -125,248 +122,93 @@
 
     </div>
 
-
     <div class="details-history">
 
         <div class="page-header">
-
             <div>
                 <h1>HISTORIAL DE ALQUILERES</h1>
             </div>
-
         </div>
 
+        @if (Model.Reservas != null && Model.Reservas.Any())
+        {
+            @foreach (var reserva in Model.Reservas.OrderByDescending(r => r.FechaDesde))
+            {
+                <div class="data-card history-year">
 
-        <div class="data-card history-year">
-
-            <div class="data-card-header">
-
-                <div>
-                    <h2>2026</h2>
-
-                    <span class="data-count">
-                        Alquiler actual
-                    </span>
-                </div>
-
-            </div>
-
-
-            <div class="history-event">
-
-                <div class="history-date">
-                    AGOSTO 2026
-                </div>
-
-
-                <div class="property-event">
-
-                    <div class="property-event-header">
+                    <div class="data-card-header">
 
                         <div>
+                            <h2>@reserva.FechaDesde.Year</h2>
 
-                            <h3>
-                                Departamento Centro
-                            </h3>
-
-                            <span>
-                                Calle Belgrano 742
+                            <span class="data-count">
+                                @(reserva.Activo == 1 ? "Alquiler actual" : "Historial anterior")
                             </span>
-
                         </div>
-
-
-                        <span class="status-badge status-rented">
-                            ALQUILER ACTUAL
-                        </span>
 
                     </div>
 
+                    <div class="history-event">
 
-                    <div class="property-event-details">
-
-                        <div>
-                            <small>PROPIETARIO</small>
-
-                            <div>
-                                Carlos Rodríguez
-                            </div>
+                        <div class="history-date">
+                            @reserva.FechaDesde.ToString("MMMM yyyy").ToUpper()
                         </div>
 
+                        <div class="property-event">
 
-                        <div>
-                            <small>ALQUILER MENSUAL</small>
+                            <div class="property-event-header">
 
-                            <div>
-                                $350.000
+                                <div>
+                                    <h3>
+                                        Reserva #@reserva.Id
+                                    </h3>
+
+                                    <span>
+                                        @reserva.InmuebleDireccion
+                                    </span>
+                                </div>
+
+                                <span class="status-badge @(reserva.Activo == 1 ? "status-rented" : "status-available")">
+                                    @(reserva.Activo == 1 ? "ALQUILER ACTUAL" : "FINALIZADO")
+                                </span>
+
                             </div>
-                        </div>
 
+                            <div class="property-event-details">
 
-                        <div>
-                            <small>ESTADO DEL PAGO</small>
+                                <div>
+                                    <small>ALQUILER MENSUAL</small>
 
-                            <div class="payment-ok">
-                                ✓ Pago
+                                    <div>
+                                        $@reserva.MontoDiario.ToString("N0")
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <small>ESTADO DEL PAGO</small>
+
+                                    <div class="payment-ok">
+                                        ✓ @(reserva.Activo == 1 ? "Pago al día" : "Finalizado")
+                                    </div>
+                                </div>
+
                             </div>
+
                         </div>
 
                     </div>
 
                 </div>
-
+            }
+        }
+        else
+        {
+            <div class="data-card history-year">
+                <div class="history-empty">
+                    No hay movimientos registrados para este período.
+                </div>
             </div>
-
-
-            <div class="history-event history-event-last">
-
-                <div class="history-date">
-                    ENERO 2026
-                </div>
-
-
-                <div class="property-event">
-
-                    <div class="property-event-header">
-
-                        <div>
-
-                            <h3>
-                                Casa Barrio Norte
-                            </h3>
-
-                            <span>
-                                Calle Mitre 456
-                            </span>
-
-                        </div>
-
-
-                        <span class="status-badge status-available">
-                            FINALIZADO
-                        </span>
-
-                    </div>
-
-
-                    <div class="property-event-details">
-
-                        <div>
-                            <small>PROPIETARIO</small>
-
-                            <div>
-                                María González
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>ALQUILER MENSUAL</small>
-
-                            <div>
-                                $280.000
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>PERÍODO</small>
-
-                            <div>
-                                Enero 2025 - Enero 2026
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="data-card history-year">
-
-            <div class="data-card-header">
-
-                <div>
-                    <h2>2025</h2>
-
-                    <span class="data-count">
-                        Historial anterior
-                    </span>
-                </div>
-
-            </div>
-
-
-            <div class="history-event history-event-last">
-
-                <div class="history-date">
-                    MARZO 2025
-                </div>
-
-
-                <div class="property-event">
-
-                    <div class="property-event-header">
-
-                        <div>
-
-                            <h3>
-                                Departamento San Luis
-                            </h3>
-
-                            <span>
-                                Avenida Illia 1250
-                            </span>
-
-                        </div>
-
-
-                        <span class="status-badge status-available">
-                            FINALIZADO
-                        </span>
-
-                    </div>
-
-
-                    <div class="property-event-details">
-
-                        <div>
-                            <small>PROPIETARIO</small>
-
-                            <div>
-                                Roberto Fernández
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>ALQUILER MENSUAL</small>
-
-                            <div>
-                                $220.000
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>ESTADO</small>
-
-                            <div class="payment-ok">
-                                ✓ Finalizado
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+        }
 
     </div>
 

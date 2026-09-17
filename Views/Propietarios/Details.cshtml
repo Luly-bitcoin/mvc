@@ -1,3 +1,4 @@
+@using System.Linq
 @model mvc.Models.Propietario
 
 @{
@@ -19,7 +20,6 @@
             ← Volver a propietarios
         </a>
     </div>
-
 
     <div class="data-card">
 
@@ -80,7 +80,6 @@
 
             </div>
 
-
             <div class="details-summary">
 
                 <div class="details-summary-header">
@@ -93,26 +92,25 @@
 
                 </div>
 
-
                 <div class="details-summary-grid">
 
                     <div class="details-summary-item">
-                        <strong>4</strong>
+                        <strong>@(Model.Inmuebles?.Count() ?? 0)</strong>
                         <span>Inmuebles</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>2</strong>
-                        <span>Alquilados</span>
-                    </div>
-
-                    <div class="details-summary-item">
-                        <strong>2</strong>
+                        <strong>@(Model.Inmuebles?.Count(i => i.Activo == 1) ?? 0)</strong>
                         <span>Disponibles</span>
                     </div>
 
                     <div class="details-summary-item">
-                        <strong>8</strong>
+                        <strong>@(Model.Inmuebles?.Count(i => i.Activo != 1) ?? 0)</strong>
+                        <span>No disponibles</span>
+                    </div>
+
+                    <div class="details-summary-item">
+                        <strong>@(Model.Pagos?.Count() ?? 0)</strong>
                         <span>Pagos registrados</span>
                     </div>
 
@@ -124,155 +122,107 @@
 
     </div>
 
-
     <div class="details-history">
 
         <div class="page-header">
-
             <div>
                 <h1>HISTORIAL</h1>
             </div>
-
         </div>
 
+        @if (Model.Inmuebles != null && Model.Inmuebles.Any())
+        {
+            @foreach (var inmueble in Model.Inmuebles)
+            {
+                <div class="data-card history-year">
 
-        <div class="data-card history-year">
-
-            <div class="data-card-header">
-
-                <div>
-                    <h2>2026</h2>
-
-                    <span class="data-count">
-                        Actividad reciente
-                    </span>
-                </div>
-
-            </div>
-
-
-            <div class="history-event">
-
-                <div class="history-date">
-                    AGOSTO 2026
-                </div>
-
-
-                <div class="property-event">
-
-                    <div class="property-event-header">
+                    <div class="data-card-header">
 
                         <div>
+                            <h2>@DateTime.Now.Year</h2>
 
-                            <h3>
-                                Departamento Centro
-                            </h3>
-
-                            <span>
-                                Calle San Martín 123
+                            <span class="data-count">
+                                Actividad reciente
                             </span>
+                        </div>
+
+                    </div>
+
+                    <div class="history-event">
+
+                        <div class="history-date">
+                            @DateTime.Now.ToString("MMMM yyyy").ToUpper()
+                        </div>
+
+                        <div class="property-event">
+
+                            <div class="property-event-header">
+
+                                <div>
+                                    <h3>
+                                        @inmueble.TipoNombre
+                                    </h3>
+
+                                    <span>
+                                        @inmueble.Direccion
+                                    </span>
+                                </div>
+
+                                <span class="status-badge @(inmueble.Activo == 1 ? "status-available" : "status-rented")">
+                                    @inmueble.Estado.ToUpper()
+                                </span>
+
+                            </div>
+
+                            <div class="property-event-details">
+
+                                <div>
+                                    <small>PRECIO</small>
+
+                                    <div>
+                                        $@inmueble.Precio.ToString("N0")
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <small>ESTADO</small>
+
+                                    <div class="payment-ok">
+                                        ✓ @inmueble.Estado
+                                    </div>
+                                </div>
+
+                            </div>
 
                         </div>
 
+                    </div>
 
-                        <span class="status-badge status-rented">
-                            ALQUILADO
+                </div>
+            }
+        }
+        else
+        {
+            <div class="data-card history-year">
+
+                <div class="data-card-header">
+
+                    <div>
+                        <h2>@DateTime.Now.Year</h2>
+
+                        <span class="data-count">
+                            Historial anterior
                         </span>
-
-                    </div>
-
-
-                    <div class="property-event-details">
-
-                        <div>
-                            <small>INQUILINO</small>
-
-                            <div>
-                                Juan Pérez
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>ALQUILER</small>
-
-                            <div>
-                                $350.000
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <small>ESTADO DEL PAGO</small>
-
-                            <div class="payment-ok">
-                                ✓ Pago
-                            </div>
-                        </div>
-
                     </div>
 
                 </div>
 
-            </div>
-
-
-            <div class="history-event history-event-last">
-
-                <div class="history-date">
-                    JUNIO 2026
-                </div>
-
-
-                <div class="property-event">
-
-                    <div class="property-event-header">
-
-                        <div>
-
-                            <h3>
-                                Casa Barrio Norte
-                            </h3>
-
-                            <span>
-                                Calle Mitre 456
-                            </span>
-
-                        </div>
-
-
-                        <span class="status-badge status-available">
-                            DISPONIBLE
-                        </span>
-
-                    </div>
-
+                <div class="history-empty">
+                    No hay movimientos registrados para este período.
                 </div>
 
             </div>
-
-        </div>
-
-
-        <div class="data-card history-year">
-
-            <div class="data-card-header">
-
-                <div>
-                    <h2>2025</h2>
-
-                    <span class="data-count">
-                        Historial anterior
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="history-empty">
-                No hay movimientos registrados para este período.
-            </div>
-
-        </div>
+        }
 
     </div>
 

@@ -25,29 +25,25 @@ namespace mvc.Repositories
         public List<Propietario> ObtenerTodos()
         {
             var propietarios = new List<Propietario>();
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM propietario";
+
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     connection.Open();
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            propietarios.Add(new Propietario
-                            {
-                                Id = reader.GetInt32(nameof(Propietario.Id)),
-                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
-                                Apellido = reader.GetString(nameof(Propietario.Apellido)),
-                                Dni = reader.GetString(nameof(Propietario.Dni)),
-                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Email))) ? null : reader.GetString(nameof(Propietario.Email)),
-                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Telefono))) ? null : reader.GetString(nameof(Propietario.Telefono))
-                            });
+                            propietarios.Add(MapPropietario(reader));
                         }
                     }
                 }
             }
+
             return propietarios;
         }
 
@@ -66,23 +62,17 @@ namespace mvc.Repositories
                     command.Parameters.AddWithValue("@Cantidad", cantidadPorPagina);
 
                     connection.Open();
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            lista.Add(new Propietario
-                            {
-                                Id = reader.GetInt32(nameof(Propietario.Id)),
-                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
-                                Apellido = reader.GetString(nameof(Propietario.Apellido)),
-                                Dni = reader.GetString(nameof(Propietario.Dni)),
-                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Email))) ? null : reader.GetString(nameof(Propietario.Email)),
-                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Telefono))) ? null : reader.GetString(nameof(Propietario.Telefono))
-                            });
+                            lista.Add(MapPropietario(reader));
                         }
                     }
                 }
             }
+
             return lista;
         }
 
@@ -90,7 +80,11 @@ namespace mvc.Repositories
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var sql = "INSERT INTO propietario (Nombre, Apellido, Dni, Email, Telefono) VALUES (@nombre, @apellido, @dni, @email, @telefono)";
+                var sql = @"
+                    INSERT INTO propietario (Nombre, Apellido, Dni, Email, Telefono)
+                    VALUES (@nombre, @apellido, @dni, @email, @telefono);
+                    SELECT LAST_INSERT_ID();";
+
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@nombre", propietario.Nombre);
@@ -100,7 +94,7 @@ namespace mvc.Repositories
                     command.Parameters.AddWithValue("@telefono", propietario.Telefono ?? (object)DBNull.Value);
 
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    propietario.Id = Convert.ToInt32(command.ExecuteScalar());
                 }
             }
         }
@@ -108,30 +102,27 @@ namespace mvc.Repositories
         public Propietario? ObtenerPorId(int id)
         {
             Propietario? propietario = null;
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM propietario WHERE Id = @id";
+
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
+
                     connection.Open();
+
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            propietario = new Propietario
-                            {
-                                Id = reader.GetInt32(nameof(Propietario.Id)),
-                                Nombre = reader.GetString(nameof(Propietario.Nombre)),
-                                Apellido = reader.GetString(nameof(Propietario.Apellido)),
-                                Dni = reader.GetString(nameof(Propietario.Dni)),
-                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Email))) ? null : reader.GetString(nameof(Propietario.Email)),
-                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Propietario.Telefono))) ? null : reader.GetString(nameof(Propietario.Telefono))
-                            };
+                            propietario = MapPropietario(reader);
                         }
                     }
                 }
             }
+
             return propietario;
         }
 
@@ -139,7 +130,16 @@ namespace mvc.Repositories
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var sql = "UPDATE propietario SET Nombre = @nombre, Apellido = @apellido, Dni = @dni, Email = @email, Telefono = @telefono WHERE Id = @id";
+                var sql = @"
+                    UPDATE propietario
+                    SET
+                        Nombre = @nombre,
+                        Apellido = @apellido,
+                        Dni = @dni,
+                        Email = @email,
+                        Telefono = @telefono
+                    WHERE Id = @id";
+
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@nombre", propietario.Nombre);
@@ -160,13 +160,31 @@ namespace mvc.Repositories
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var sql = "DELETE FROM propietario WHERE Id = @id";
+
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
+
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        private static Propietario MapPropietario(MySqlDataReader reader)
+        {
+            int emailOrdinal = reader.GetOrdinal(nameof(Propietario.Email));
+            int telefonoOrdinal = reader.GetOrdinal(nameof(Propietario.Telefono));
+
+            return new Propietario
+            {
+                Id = reader.GetInt32(reader.GetOrdinal(nameof(Propietario.Id))),
+                Nombre = reader.GetString(reader.GetOrdinal(nameof(Propietario.Nombre))),
+                Apellido = reader.GetString(reader.GetOrdinal(nameof(Propietario.Apellido))),
+                Dni = reader.GetString(reader.GetOrdinal(nameof(Propietario.Dni))),
+                Email = reader.IsDBNull(emailOrdinal) ? null : reader.GetString(emailOrdinal),
+                Telefono = reader.IsDBNull(telefonoOrdinal) ? null : reader.GetString(telefonoOrdinal)
+            };
         }
     }
 }

@@ -38,23 +38,7 @@ namespace mvc.Repositories
                     {
                         while (reader.Read())
                         {
-                            inquilinos.Add(new Inquilino
-                            {
-                                Id = reader.GetInt32(nameof(Inquilino.Id)),
-                                Nombre = reader.GetString(nameof(Inquilino.Nombre)),
-                                Apellido = reader.GetString(nameof(Inquilino.Apellido)),
-                                Dni = reader.GetString(nameof(Inquilino.Dni)),
-
-                                Email = reader.IsDBNull(
-                                    reader.GetOrdinal(nameof(Inquilino.Email)))
-                                    ? null
-                                    : reader.GetString(nameof(Inquilino.Email)),
-
-                                Telefono = reader.IsDBNull(
-                                    reader.GetOrdinal(nameof(Inquilino.Telefono)))
-                                    ? null
-                                    : reader.GetString(nameof(Inquilino.Telefono))
-                            });
+                            inquilinos.Add(MapInquilino(reader));
                         }
                     }
                 }
@@ -83,19 +67,12 @@ namespace mvc.Repositories
                     {
                         while (reader.Read())
                         {
-                            inquilinos.Add(new Inquilino
-                            {
-                                Id = reader.GetInt32(nameof(Inquilino.Id)),
-                                Nombre = reader.GetString(nameof(Inquilino.Nombre)),
-                                Apellido = reader.GetString(nameof(Inquilino.Apellido)),
-                                Dni = reader.GetString(nameof(Inquilino.Dni)),
-                                Email = reader.IsDBNull(reader.GetOrdinal(nameof(Inquilino.Email))) ? null : reader.GetString(nameof(Inquilino.Email)),
-                                Telefono = reader.IsDBNull(reader.GetOrdinal(nameof(Inquilino.Telefono))) ? null : reader.GetString(nameof(Inquilino.Telefono))
-                            });
+                            inquilinos.Add(MapInquilino(reader));
                         }
                     }
                 }
             }
+
             return inquilinos;
         }
 
@@ -104,36 +81,20 @@ namespace mvc.Repositories
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var sql = @"
-                    INSERT INTO inquilino
-                    (Nombre, Apellido, Dni, Email, Telefono)
-                    VALUES
-                    (@nombre, @apellido, @dni, @email, @telefono)";
+                    INSERT INTO inquilino (Nombre, Apellido, Dni, Email, Telefono)
+                    VALUES (@nombre, @apellido, @dni, @email, @telefono);
+                    SELECT LAST_INSERT_ID();";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue(
-                        "@nombre",
-                        inquilino.Nombre);
-
-                    command.Parameters.AddWithValue(
-                        "@apellido",
-                        inquilino.Apellido);
-
-                    command.Parameters.AddWithValue(
-                        "@dni",
-                        inquilino.Dni);
-
-                    command.Parameters.AddWithValue(
-                        "@email",
-                        inquilino.Email ?? (object)DBNull.Value);
-
-                    command.Parameters.AddWithValue(
-                        "@telefono",
-                        inquilino.Telefono ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@nombre", inquilino.Nombre);
+                    command.Parameters.AddWithValue("@apellido", inquilino.Apellido);
+                    command.Parameters.AddWithValue("@dni", inquilino.Dni);
+                    command.Parameters.AddWithValue("@email", inquilino.Email ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@telefono", inquilino.Telefono ?? (object)DBNull.Value);
 
                     connection.Open();
-
-                    command.ExecuteNonQuery();
+                    inquilino.Id = Convert.ToInt32(command.ExecuteScalar());
                 }
             }
         }
@@ -144,10 +105,7 @@ namespace mvc.Repositories
 
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var sql = @"
-                    SELECT Id, Nombre, Apellido, Dni, Email, Telefono
-                    FROM inquilino
-                    WHERE Id = @id";
+                var sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM inquilino WHERE Id = @id";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
@@ -159,30 +117,7 @@ namespace mvc.Repositories
                     {
                         if (reader.Read())
                         {
-                            inquilino = new Inquilino
-                            {
-                                Id = reader.GetInt32(
-                                    nameof(Inquilino.Id)),
-
-                                Nombre = reader.GetString(
-                                    nameof(Inquilino.Nombre)),
-
-                                Apellido = reader.GetString(
-                                    nameof(Inquilino.Apellido)),
-
-                                Dni = reader.GetString(
-                                    nameof(Inquilino.Dni)),
-
-                                Email = reader.IsDBNull(
-                                    reader.GetOrdinal(nameof(Inquilino.Email)))
-                                    ? null
-                                    : reader.GetString(nameof(Inquilino.Email)),
-
-                                Telefono = reader.IsDBNull(
-                                    reader.GetOrdinal(nameof(Inquilino.Telefono)))
-                                    ? null
-                                    : reader.GetString(nameof(Inquilino.Telefono))
-                            };
+                            inquilino = MapInquilino(reader);
                         }
                     }
                 }
@@ -207,32 +142,14 @@ namespace mvc.Repositories
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue(
-                        "@nombre",
-                        inquilino.Nombre);
-
-                    command.Parameters.AddWithValue(
-                        "@apellido",
-                        inquilino.Apellido);
-
-                    command.Parameters.AddWithValue(
-                        "@dni",
-                        inquilino.Dni);
-
-                    command.Parameters.AddWithValue(
-                        "@email",
-                        inquilino.Email ?? (object)DBNull.Value);
-
-                    command.Parameters.AddWithValue(
-                        "@telefono",
-                        inquilino.Telefono ?? (object)DBNull.Value);
-
-                    command.Parameters.AddWithValue(
-                        "@id",
-                        inquilino.Id);
+                    command.Parameters.AddWithValue("@nombre", inquilino.Nombre);
+                    command.Parameters.AddWithValue("@apellido", inquilino.Apellido);
+                    command.Parameters.AddWithValue("@dni", inquilino.Dni);
+                    command.Parameters.AddWithValue("@email", inquilino.Email ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@telefono", inquilino.Telefono ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@id", inquilino.Id);
 
                     connection.Open();
-
                     command.ExecuteNonQuery();
                 }
             }
@@ -249,10 +166,25 @@ namespace mvc.Repositories
                     command.Parameters.AddWithValue("@id", id);
 
                     connection.Open();
-
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        private static Inquilino MapInquilino(MySqlDataReader reader)
+        {
+            int emailOrdinal = reader.GetOrdinal(nameof(Inquilino.Email));
+            int telefonoOrdinal = reader.GetOrdinal(nameof(Inquilino.Telefono));
+
+            return new Inquilino
+            {
+                Id = reader.GetInt32(reader.GetOrdinal(nameof(Inquilino.Id))),
+                Nombre = reader.GetString(reader.GetOrdinal(nameof(Inquilino.Nombre))),
+                Apellido = reader.GetString(reader.GetOrdinal(nameof(Inquilino.Apellido))),
+                Dni = reader.GetString(reader.GetOrdinal(nameof(Inquilino.Dni))),
+                Email = reader.IsDBNull(emailOrdinal) ? null : reader.GetString(emailOrdinal),
+                Telefono = reader.IsDBNull(telefonoOrdinal) ? null : reader.GetString(telefonoOrdinal)
+            };
         }
     }
 }
