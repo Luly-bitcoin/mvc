@@ -1,11 +1,15 @@
+using System;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using mvc.Models;
 using mvc.Repositories;
 using mvc.Filters;
 
 namespace mvc.Controllers
 {
-    [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
+    // Quitamos el filtro de Administrador de toda la clase para permitir que un empleado edite su perfil,
+    // y lo aplicaremos de forma específica o validaremos el rol dentro de los métodos.
     public class UsuariosController : Controller
     {
         private readonly IRepositorioUsuario _repositorio;
@@ -15,20 +19,26 @@ namespace mvc.Controllers
             _repositorio = repositorio;
         }
 
-
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Index(int pagina = 1)
         {
             var usuarios = _repositorio.ObtenerTodos();
-
             ViewBag.PaginaActual = pagina;
-
             return View(usuarios);
         }
-
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            // Validamos si es admin o si el usuario logueado quiere editar su propio perfil
+            int usuarioLogueadoId = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            string rolLogueado = HttpContext.Session.GetString("Rol") ?? "";
+
+            if (rolLogueado != "ADMINISTRADOR" && usuarioLogueadoId != id)
+            {
+                return Unauthorized();
+            }
+
             var usuario = _repositorio.ObtenerPorId(id);
 
             if (usuario == null)
@@ -38,7 +48,6 @@ namespace mvc.Controllers
 
             return View(usuario);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,6 +59,14 @@ namespace mvc.Controllers
             string? nuevaContraseña,
             string? confirmarContraseña)
         {
+            int usuarioLogueadoId = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            string rolLogueado = HttpContext.Session.GetString("Rol") ?? "";
+
+            if (rolLogueado != "ADMINISTRADOR" && usuarioLogueadoId != id)
+            {
+                return Unauthorized();
+            }
+
             if (id != usuario.Id)
             {
                 return NotFound();
@@ -62,6 +79,7 @@ namespace mvc.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove(nameof(usuario.Password));
 
             bool quiereCambiarContraseña =
                 !string.IsNullOrWhiteSpace(nuevaContraseña) ||
@@ -71,45 +89,44 @@ namespace mvc.Controllers
             {
                 if (string.IsNullOrWhiteSpace(nuevaContraseña))
                 {
-                    ModelState.AddModelError(
-                        "",
-                        "Debe ingresar una nueva contraseña."
-                    );
+                    ModelState.AddModelError("", "Debe ingresar una nueva contraseña.");
                 }
 
                 if (nuevaContraseña != confirmarContraseña)
                 {
-                    ModelState.AddModelError(
-                        "",
-                        "Las nuevas contraseñas no coinciden."
-                    );
+                    ModelState.AddModelError("", "Las nuevas contraseñas no coinciden.");
                 }
 
-                if (!ModelState.IsValid)
-                {
-                    usuario.Avatar = usuarioActual.Avatar;
-                    return View(usuario);
-                }
-
-                #pragma warning disable CS8601 
-                usuario.Password = nuevaContraseña;
-                #pragma warning restore CS8601 
+                // AQUÍ SE ENCRIPTA LA CONTRASEÑA NUEVA CON BCrypt
+#pragma warning disable CS8601
+                usuario.Password = BCrypt.Net.BCrypt.HashPassword(nuevaContraseña);
+#pragma warning restore CS8601
             }
             else
             {
+                // Si no se quiere cambiar, se mantiene la contraseña encriptada que ya tenía
                 usuario.Password = usuarioActual.Password;
             }
 
+            var usuarioPorEmail = _repositorio.ObtenerPorEmail(usuario.Email);
+            if (usuarioPorEmail != null && usuarioPorEmail.Id != usuario.Id)
+            {
+                ModelState.AddModelError("Email", "El email ya se encuentra registrado por otro usuario.");
+            }
+
+            var usuarioPorNombre = _repositorio.ObtenerPorNombreUsuario(usuario.NombreUsuario);
+            if (usuarioPorNombre != null && usuarioPorNombre.Id != usuario.Id)
+            {
+                ModelState.AddModelError("NombreUsuario", "El nombre de usuario ya está en uso.");
+            }
 
             usuario.Avatar = usuarioActual.Avatar;
 
             if (eliminarAvatar)
             {
                 EliminarArchivoAvatar(usuarioActual.Avatar);
-
                 usuario.Avatar = null;
             }
-
 
             if (avatar != null && avatar.Length > 0)
             {
@@ -118,41 +135,25 @@ namespace mvc.Controllers
                     EliminarArchivoAvatar(usuarioActual.Avatar);
                 }
 
-                var nombreArchivo =
-                    Guid.NewGuid().ToString()
-                    + Path.GetExtension(avatar.FileName);
-
-                var carpeta = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    "wwwroot",
-                    "uploads",
-                    "avatars"
-                );
-
+                var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(avatar.FileName);
+                var carpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "avatars");
+                
                 Directory.CreateDirectory(carpeta);
+                
+                var rutaCompleta = Path.Combine(carpeta, nombreArchivo);
 
-                var rutaCompleta = Path.Combine(
-                    carpeta,
-                    nombreArchivo
-                );
-
-                using (var stream = new FileStream(
-                    rutaCompleta,
-                    FileMode.Create))
+                using (var stream = new FileStream(rutaCompleta, FileMode.Create))
                 {
                     avatar.CopyTo(stream);
                 }
 
-                usuario.Avatar =
-                    "/uploads/avatars/" + nombreArchivo;
+                usuario.Avatar = "/uploads/avatars/" + nombreArchivo;
             }
-
 
             if (!ModelState.IsValid)
             {
                 return View(usuario);
             }
-
 
             _repositorio.Modificacion(usuario);
 
@@ -160,6 +161,7 @@ namespace mvc.Controllers
         }
 
         [HttpPost]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
         public IActionResult Delete(int id)
         {
             var usuario = _repositorio.ObtenerPorId(id);
@@ -168,6 +170,7 @@ namespace mvc.Controllers
             {
                 return NotFound();
             }
+            
             if (!string.IsNullOrEmpty(usuario.Avatar))
             {
                 EliminarArchivoAvatar(usuario.Avatar);

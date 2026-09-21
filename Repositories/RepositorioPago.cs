@@ -16,6 +16,32 @@ namespace mvc.Repositories
                 ?? throw new InvalidOperationException("No se encontró la cadena de conexión DefaultConnection.");
         }
 
+        public List<Pago> ObtenerTodos()
+        {
+            var pagos = new List<Pago>();
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            string sql = @"
+                SELECT 
+                    p.id, p.id_reserva, p.concepto, p.fecha_pago, p.importe, p.activo, 
+                    p.creado_por_user_id, p.anulado_por_user_id,
+                    CONCAT('Reserva #', r.id) AS reserva_detalle
+                FROM pago p
+                INNER JOIN reserva r ON p.id_reserva = r.id
+                ORDER BY p.id DESC;";
+
+            using var command = new MySqlCommand(sql, connection);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                pagos.Add(MapearPago(reader));
+            }
+
+            return pagos;
+        }
+
         public List<Pago> ObtenerPorReserva(int idReserva)
         {
             var pagos = new List<Pago>();

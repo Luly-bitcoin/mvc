@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2026 a las 22:00:24
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Tiempo de generación: 21-09-2026 a las 18:46:14
+-- Versión del servidor: 8.0.43
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,16 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `inmueble` (
-  `id` int(11) NOT NULL,
-  `id_propietario` int(11) NOT NULL,
-  `id_tipo_inmueble` int(11) NOT NULL,
-  `direccion` varchar(255) NOT NULL,
-  `cupo` int(11) NOT NULL,
-  `coord` varchar(100) DEFAULT NULL,
+  `id` int NOT NULL,
+  `id_propietario` int NOT NULL,
+  `id_tipo_inmueble` int NOT NULL,
+  `direccion` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `cupo` int NOT NULL,
+  `coord` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `foto_portada` varchar(255) DEFAULT NULL,
-  `fotos` varchar(255) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `foto_portada` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `fotos` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -45,7 +45,12 @@ CREATE TABLE `inmueble` (
 --
 
 INSERT INTO `inmueble` (`id`, `id_propietario`, `id_tipo_inmueble`, `direccion`, `cupo`, `coord`, `precio`, `activo`, `foto_portada`, `fotos`) VALUES
-(2, 5, 2, 'San Luis', 2, '-33.298397, -66.328655', 500000.00, 1, '/uploads/inmuebles/00699c14-a185-4a9e-93ab-2cc0669cbe9b.jpg', '/uploads/inmuebles/683a7d9c-4f63-447d-8e97-10335b38b571.jpg,/uploads/inmuebles/b3add23a-56c8-4584-9652-33b16fb14706.jpg,/uploads/inmuebles/82da591d-b3a3-4969-814d-933278b2042e.jpg');
+(1, 2, 4, 'La Toma', 2, NULL, 100000.00, 1, NULL, NULL),
+(2, 2, 1, 'San Luis', 2, '-33.3012', 50000.00, 1, '/uploads/inmuebles/a200bcef-d92c-4e41-863d-df047516935a.webp', NULL),
+(3, 5, 1, 'Cordoba 1245', 2, '-33.3013', 50000.00, 1, '/uploads/inmuebles/0f862986-8040-4dd2-9a5c-156018b89d98.webp', NULL),
+(4, 6, 1, 'Cordoba 124000', 2, '-33.3089', 50000.00, 1, '/uploads/inmuebles/21afeed8-47e7-45a9-9e2c-7ef00fd0ea7b.webp', NULL),
+(5, 6, 1, 'Cordoba 124000', 2, '-33.3089', 50000.00, 1, '/uploads/inmuebles/eab5b0d5-3892-4cbe-ad08-5eb194f70215.webp', NULL),
+(6, 11, 1, 'Cordoba 1240', 2, '-33.50000', 85000.00, 1, '/uploads/inmuebles/86e3b9d1-aa66-4c4d-a135-2ba83af6ad10.webp', NULL);
 
 -- --------------------------------------------------------
 
@@ -54,12 +59,12 @@ INSERT INTO `inmueble` (`id`, `id_propietario`, `id_tipo_inmueble`, `direccion`,
 --
 
 CREATE TABLE `inquilino` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `dni` varchar(20) NOT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `dni` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -67,12 +72,7 @@ CREATE TABLE `inquilino` (
 --
 
 INSERT INTO `inquilino` (`id`, `nombre`, `apellido`, `dni`, `email`, `telefono`) VALUES
-(1, 'Milena ', 'Miselli', '45887654', 'milemise@gmail.com', '2665112211'),
-(2, 'Santino', 'Gil', '38993824', 'santi@gmail.com', '2665665566'),
-(3, 'Laura', 'Castillo', '45223123', 'lara@gmail.com', '2664111111'),
-(5, 'Miguel', 'Suarez', '23057028', 'miguel@gmail.com', '2664112211'),
-(9, 'Patricio', 'Estrella', '12562536', 'patricio@gmail.com', '2665112211'),
-(10, 'Juampi', 'Rodriguez', '42332131', 'juan@gmail.com', '266112212');
+(1, 'Maria', 'Gomez', '34235325', 'maria@gmail.com', '35232532532');
 
 -- --------------------------------------------------------
 
@@ -81,14 +81,14 @@ INSERT INTO `inquilino` (`id`, `nombre`, `apellido`, `dni`, `email`, `telefono`)
 --
 
 CREATE TABLE `pago` (
-  `id` int(11) NOT NULL,
-  `id_reserva` int(11) NOT NULL,
-  `concepto` varchar(150) NOT NULL,
+  `id` int NOT NULL,
+  `id_reserva` int NOT NULL,
+  `concepto` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
   `fecha_pago` date NOT NULL,
   `importe` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `creado_por_user_id` int(11) NOT NULL,
-  `anulado_por_user_id` int(11) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `creado_por_user_id` int NOT NULL,
+  `anulado_por_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -98,12 +98,12 @@ CREATE TABLE `pago` (
 --
 
 CREATE TABLE `propietario` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `dni` varchar(20) NOT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `dni` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -111,6 +111,7 @@ CREATE TABLE `propietario` (
 --
 
 INSERT INTO `propietario` (`id`, `nombre`, `apellido`, `dni`, `email`, `telefono`) VALUES
+(2, 'Lourdes', 'Gomez', '12312413', 'maria@gmail.com', '3123213'),
 (3, 'Louis', 'Sosa', '21312414', 'loues@gmai.com', '21312321'),
 (4, 'Lucas', 'Asakds', '21321432', 'lucas@hotmail.com', '2243523522'),
 (5, 'Jose', 'Paez', '21312342', 'jose@gmail.com', '2323423524'),
@@ -129,24 +130,16 @@ INSERT INTO `propietario` (`id`, `nombre`, `apellido`, `dni`, `email`, `telefono
 --
 
 CREATE TABLE `reserva` (
-  `id` int(11) NOT NULL,
-  `id_inmueble` int(11) NOT NULL,
-  `id_inquilino` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `id_inmueble` int NOT NULL,
+  `id_inquilino` int NOT NULL,
   `fecha_desde` date NOT NULL,
   `fecha_hasta` date NOT NULL,
   `monto_diario` decimal(10,2) NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `creado_por_user_id` int(11) DEFAULT NULL,
-  `terminado_por_user_id` int(11) DEFAULT NULL
+  `activo` int DEFAULT '1',
+  `creado_por_user_id` int NOT NULL,
+  `terminado_por_user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reserva`
---
-
-INSERT INTO `reserva` (`id`, `id_inmueble`, `id_inquilino`, `fecha_desde`, `fecha_hasta`, `monto_diario`, `activo`, `creado_por_user_id`, `terminado_por_user_id`) VALUES
-(4, 2, 2, '2026-09-03', '2026-09-04', 500000.00, 0, NULL, NULL),
-(5, 2, 5, '2026-09-03', '2026-09-04', 500000.00, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -155,8 +148,8 @@ INSERT INTO `reserva` (`id`, `id_inmueble`, `id_inquilino`, `fecha_desde`, `fech
 --
 
 CREATE TABLE `tipo_inmueble` (
-  `id` int(11) NOT NULL,
-  `descripcion` varchar(100) NOT NULL
+  `id` int NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -178,15 +171,22 @@ INSERT INTO `tipo_inmueble` (`id`, `descripcion`) VALUES
 --
 
 CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL,
-  `nombre_usuario` varchar(50) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `avatar` varchar(255) DEFAULT NULL,
-  `rol` varchar(50) NOT NULL
+  `id` int NOT NULL,
+  `nombre_usuario` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `rol` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `nombre_usuario`, `nombre`, `apellido`, `email`, `password`, `avatar`, `rol`) VALUES
+(5, 'admin', 'Administrador', 'Sistema', 'admin@agencia.com', '$2a$11$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'ADMINISTRADOR');
 
 --
 -- Índices para tablas volcadas
@@ -253,43 +253,43 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `inquilino`
 --
 ALTER TABLE `inquilino`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
 --
 ALTER TABLE `propietario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_inmueble`
 --
 ALTER TABLE `tipo_inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
