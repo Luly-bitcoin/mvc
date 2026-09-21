@@ -23,10 +23,10 @@ El sistema utiliza una base de datos relacional normalizada que incluye las enti
 
 ## Usuarios de prueba
 * **Administrador**
-  * Usuario: `lulu` (o `admin`)
-  * Contraseña: `mari123` (Acceso de emergencia alternativo: `123456`)
+  * Usuario: `admin`
+  * Contraseña: `123456`
 * **Empleado**
-  * Usuario: `mile`
+  * Usuario: `empleado1`
   * Contraseña: `empleado123`
 
 ## Base de Datos
