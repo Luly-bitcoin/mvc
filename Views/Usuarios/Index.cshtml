@@ -31,28 +31,14 @@
                     <h2 class="m-0">Usuarios registrados</h2>
                 </div>
 
-                <form asp-action="Index" method="get" class="d-flex gap-2 m-0">
+                <div class="search-box">
+                    <span>⌕</span>
 
                     <input type="text"
-                           name="busqueda"
-                           class="form-control-custom"
-                           placeholder="Buscar usuario..."
-                           value="@ViewBag.Busqueda"
-                           style="width: 250px;" />
-
-                    <button type="submit" class="btn-primary-custom">
-                        Buscar
-                    </button>
-
-                    @if (!string.IsNullOrEmpty(ViewBag.Busqueda))
-                    {
-                        <a asp-action="Index"
-                           class="btn-secondary-custom text-decoration-none d-flex align-items-center">
-                            Limpiar
-                        </a>
-                    }
-
-                </form>
+                        id="buscadorUsuarios"
+                        placeholder="Buscar usuario..."
+                        value="@ViewBag.Busqueda" />
+                </div>
 
             </div>
 
@@ -131,7 +117,10 @@
         <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
 
             <a class="page-link"
-               href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1 })">
+                href="@Url.Action("Index", new {
+                    pagina = ViewBag.PaginaActual - 1,
+                    busqueda = ViewBag.Busqueda
+                })">
                 Anterior
             </a>
 
@@ -150,7 +139,10 @@
         <li class="page-item @(Model.Count() < 10 ? "disabled" : "")">
 
             <a class="page-link"
-               href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1 })">
+                href="@Url.Action("Index", new {
+                    pagina = ViewBag.PaginaActual + 1,
+                    busqueda = ViewBag.Busqueda
+                })">
                 Siguiente
             </a>
 
@@ -205,4 +197,34 @@
 
     }
 
+</script>
+
+<script>
+    const buscadorUsuarios = document.getElementById("buscadorUsuarios");
+
+    let temporizadorBusqueda;
+
+    buscadorUsuarios.addEventListener("input", function () {
+
+        clearTimeout(temporizadorBusqueda);
+
+        temporizadorBusqueda = setTimeout(function () {
+
+            const valor = buscadorUsuarios.value.trim();
+
+            const url = new URL(window.location.href);
+
+            url.searchParams.set("pagina", "1");
+
+            if (valor === "") {
+                url.searchParams.delete("busqueda");
+            } else {
+                url.searchParams.set("busqueda", valor);
+            }
+
+            window.location.href = url.toString();
+
+        }, 300);
+
+    });
 </script>

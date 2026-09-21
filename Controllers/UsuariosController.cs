@@ -19,11 +19,20 @@ namespace mvc.Controllers
             _repositorio = repositorio;
         }
 
-        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult Index(int pagina = 1)
+
+        public IActionResult Index(int pagina = 1, string? busqueda = null)
         {
-            var usuarios = _repositorio.ObtenerTodos();
+            int cantidadPorPagina = 10;
+
+            var usuarios = _repositorio.ObtenerPaginado(
+                pagina,
+                cantidadPorPagina,
+                busqueda
+            );
+
             ViewBag.PaginaActual = pagina;
+            ViewBag.Busqueda = busqueda;
+
             return View(usuarios);
         }
 

@@ -1296,6 +1296,8 @@ main {
     border-radius: 15px;
     padding: 22px;
     background: #FCFAF8;
+    margin: 20px;
+    background-color: #dedede;
 }
 
 .property-event-header {

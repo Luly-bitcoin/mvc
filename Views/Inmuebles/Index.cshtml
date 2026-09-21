@@ -19,19 +19,24 @@
 
     </div>
 
-   <div class="data-card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
-    <div>
-        <h2>Inmuebles registrados</h2>
+<div class="data-card">
+
+    <div class="data-card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div>
+            <h2>Inmuebles registrados</h2>
+        </div>
+
+        <div class="search-box">
+            <span>⌕</span>
+
+            <input type="text"
+                id="buscadorInmuebles"
+                placeholder="Buscar dirección..."
+                value="@ViewBag.Ubicacion" />
+        </div>
+
     </div>
-    <form asp-action="Index" method="get" class="d-flex gap-2">
-        <input type="text" name="ubicacion" class="form-control-custom" placeholder="Buscar dirección..." value="@ViewBag.Ubicacion" style="width: 250px;" />
-        <button type="submit" class="btn-primary-custom">Buscar</button>
-        @if (!string.IsNullOrEmpty(ViewBag.Ubicacion))
-        {
-            <a asp-action="Index" class="btn-secondary-custom text-decoration-none d-flex align-items-center">Limpiar</a>
-        }
-    </form>
-</div>
         <div class="table-responsive">
 
             <table class="table custom-table align-middle mb-0">
@@ -151,7 +156,13 @@
 <nav aria-label="Navegacion" class="mt-4">
     <ul class="pagination justify-content-center">
         <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1 })">Anterior</a>
+            <a class="page-link"
+                href="@Url.Action("Index", new {
+                    pagina = ViewBag.PaginaActual - 1,
+                    ubicacion = ViewBag.Ubicacion
+                })">
+                    Anterior
+                </a>
         </li>
         
         <li class="page-item active">
@@ -159,7 +170,42 @@
         </li>
 
         <li class="page-item @(Model.Count() < 10 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1 })">Siguiente</a>
-        </li>
+            <a class="page-link"
+            href="@Url.Action("Index", new {
+                pagina = ViewBag.PaginaActual + 1,
+                ubicacion = ViewBag.Ubicacion
+            })">
+                Siguiente
+            </a>
     </ul>
 </nav>
+
+<script>
+    const buscador = document.getElementById("buscadorInmuebles");
+
+    let temporizador;
+
+    buscador.addEventListener("input", function () {
+
+        clearTimeout(temporizador);
+
+        temporizador = setTimeout(function () {
+
+            const valor = buscador.value.trim();
+
+            const url = new URL(window.location.href);
+
+            url.searchParams.set("pagina", "1");
+
+            if (valor === "") {
+                url.searchParams.delete("ubicacion");
+            } else {
+                url.searchParams.set("ubicacion", valor);
+            }
+
+            window.location.href = url.toString();
+
+        }, 300);
+
+    });
+</script>

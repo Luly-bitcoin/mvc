@@ -1,5 +1,6 @@
 using mvc.Models;
 using MySqlConnector;
+using System.Linq;
 
 namespace mvc.Repositories
 {
@@ -105,7 +106,49 @@ namespace mvc.Repositories
 
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var sql = "SELECT Id, Nombre, Apellido, Dni, Email, Telefono FROM propietario WHERE Id = @id";
+                var sql = @"
+                    SELECT
+                        p.id AS PropietarioId,
+                        p.nombre AS PropietarioNombre,
+                        p.apellido AS PropietarioApellido,
+                        p.dni AS PropietarioDni,
+                        p.email AS PropietarioEmail,
+                        p.telefono AS PropietarioTelefono,
+
+                        i.id AS InmuebleId,
+                        i.id_propietario AS IdPropietario,
+                        i.direccion AS Direccion,
+                        i.precio AS Precio,
+                        i.activo AS InmuebleActivo,
+
+                        ti.descripcion AS TipoNombre,
+
+                        r.id AS ReservaId,
+                        r.id_inquilino AS IdInquilino,
+                        r.fecha_desde AS FechaDesde,
+                        r.fecha_hasta AS FechaHasta,
+                        r.monto_diario AS MontoDiario,
+                        r.activo AS ReservaActivo,
+
+                        CONCAT(inq.nombre, ' ', inq.apellido) AS InquilinoNombre
+
+                    FROM propietario p
+
+                    LEFT JOIN inmueble i
+                        ON i.id_propietario = p.id
+
+                    LEFT JOIN tipo_inmueble ti
+                        ON ti.id = i.id_tipo_inmueble
+
+                    LEFT JOIN reserva r
+                        ON r.id_inmueble = i.id
+
+                    LEFT JOIN inquilino inq
+                        ON inq.id = r.id_inquilino
+
+                    WHERE p.id = @id
+
+                    ORDER BY i.id, r.fecha_desde DESC";
 
                 using (var command = new MySqlCommand(sql, connection))
                 {
@@ -115,9 +158,146 @@ namespace mvc.Repositories
 
                     using (var reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
+                        while (reader.Read())
                         {
-                            propietario = MapPropietario(reader);
+
+                            if (propietario == null)
+                            {
+                                propietario = new Propietario
+                                {
+                                    Id = reader.GetInt32(
+                                        reader.GetOrdinal("PropietarioId")
+                                    ),
+
+                                    Nombre = reader.GetString(
+                                        reader.GetOrdinal("PropietarioNombre")
+                                    ),
+
+                                    Apellido = reader.GetString(
+                                        reader.GetOrdinal("PropietarioApellido")
+                                    ),
+
+                                    Dni = reader.GetString(
+                                        reader.GetOrdinal("PropietarioDni")
+                                    ),
+
+                                    Email = reader.IsDBNull(
+                                        reader.GetOrdinal("PropietarioEmail")
+                                    )
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("PropietarioEmail")
+                                        ),
+
+                                    Telefono = reader.IsDBNull(
+                                        reader.GetOrdinal("PropietarioTelefono")
+                                    )
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("PropietarioTelefono")
+                                        ),
+
+                                    Inmuebles = new List<Inmueble>()
+                                };
+                            }
+
+
+                            if (!reader.IsDBNull(reader.GetOrdinal("InmuebleId")))
+                            {
+                                int inmuebleId = reader.GetInt32(
+                                    reader.GetOrdinal("InmuebleId")
+                                );
+
+                                var inmueble = propietario.Inmuebles!
+                                    .FirstOrDefault(i => i.Id == inmuebleId);
+
+                                if (inmueble == null)
+                                {
+                                    inmueble = new Inmueble
+                                    {
+                                        Id = inmuebleId,
+
+                                        IdPropietario = reader.GetInt32(
+                                            reader.GetOrdinal("IdPropietario")
+                                        ),
+
+                                        Direccion = reader.GetString(
+                                            reader.GetOrdinal("Direccion")
+                                        ),
+
+                                        Precio = reader.GetDecimal(
+                                            reader.GetOrdinal("Precio")
+                                        ),
+
+                                        Activo = reader.GetInt32(
+                                            reader.GetOrdinal("InmuebleActivo")
+                                        ),
+
+                                        TipoNombre = reader.IsDBNull(
+                                            reader.GetOrdinal("TipoNombre")
+                                        )
+                                            ? ""
+                                            : reader.GetString(
+                                                reader.GetOrdinal("TipoNombre")
+                                            ),
+
+                                        Reservas = new List<Reserva>()
+                                    };
+
+                                    propietario.Inmuebles!.Add(inmueble);
+                                }
+
+
+                                if (!reader.IsDBNull(reader.GetOrdinal("ReservaId")))
+                                {
+                                    int reservaId = reader.GetInt32(
+                                        reader.GetOrdinal("ReservaId")
+                                    );
+
+                                    var reservaExistente = inmueble.Reservas!
+                                        .FirstOrDefault(r => r.Id == reservaId);
+
+                                    if (reservaExistente == null)
+                                    {
+                                        var reserva = new Reserva
+                                        {
+                                            Id = reservaId,
+
+                                            IdInmueble = inmuebleId,
+
+                                            IdInquilino = reader.GetInt32(
+                                                reader.GetOrdinal("IdInquilino")
+                                            ),
+
+                                            FechaDesde = reader.GetDateTime(
+                                                reader.GetOrdinal("FechaDesde")
+                                            ),
+
+                                            FechaHasta = reader.GetDateTime(
+                                                reader.GetOrdinal("FechaHasta")
+                                            ),
+
+                                            MontoDiario = reader.GetDecimal(
+                                                reader.GetOrdinal("MontoDiario")
+                                            ),
+
+                                            Activo = reader.GetInt32(
+                                                reader.GetOrdinal("ReservaActivo")
+                                            ),
+
+                                            InquilinoNombre = reader.IsDBNull(
+                                                reader.GetOrdinal("InquilinoNombre")
+                                            )
+                                                ? ""
+                                                : reader.GetString(
+                                                    reader.GetOrdinal("InquilinoNombre")
+                                                )
+                                        };
+
+                                        inmueble.Reservas!.Add(reserva);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

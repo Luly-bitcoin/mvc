@@ -25,11 +25,19 @@ namespace mvc.Controllers
             this.repositorioInquilino = repositorioInquilino;
         }
 
-        public IActionResult Index(int pagina = 1)
+        public IActionResult Index(int pagina = 1, string? busqueda = null)
         {
             int cantidadPorPagina = 10;
-            var reservas = repositorioReserva.ObtenerPaginado(pagina, cantidadPorPagina);
+
+            var reservas = repositorioReserva.ObtenerPaginado(
+                pagina,
+                cantidadPorPagina,
+                busqueda
+            );
+
             ViewBag.PaginaActual = pagina;
+            ViewBag.Busqueda = busqueda;
+
             return View(reservas);
         }
 
@@ -113,24 +121,14 @@ namespace mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult Delete(int id)
-        {
-            var reserva = repositorioReserva.ObtenerPorId(id);
-            if (reserva == null)
-            {
-                return NotFound();
-            }
-            return View(reserva);
-        }
-
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
+
         {
             repositorioReserva.Baja(id);
+
             return RedirectToAction(nameof(Index));
         }
 

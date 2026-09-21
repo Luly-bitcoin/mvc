@@ -15,6 +15,7 @@ namespace mvc.Models
         public string? Fotos { get; set; }
         public string? PropietarioNombre { get; set; }
         public string? TipoNombre { get; set; }
+        public ICollection<Reserva>? Reservas { get; set; }
 
         public string Estado
         {
