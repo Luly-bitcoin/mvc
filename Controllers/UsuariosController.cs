@@ -8,8 +8,7 @@ using mvc.Filters;
 
 namespace mvc.Controllers
 {
-    // Quitamos el filtro de Administrador de toda la clase para permitir que un empleado edite su perfil,
-    // y lo aplicaremos de forma específica o validaremos el rol dentro de los métodos.
+    [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
     public class UsuariosController : Controller
     {
         private readonly IRepositorioUsuario _repositorio;
@@ -39,8 +38,7 @@ namespace mvc.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            // Validamos si es admin o si el usuario logueado quiere editar su propio perfil
-            int usuarioLogueadoId = HttpContext.Session.GetInt32("IdUsuario") ?? 0;
+            int usuarioLogueadoId = HttpContext.Session.GetInt32("UsuarioId") ?? 0;
             string rolLogueado = HttpContext.Session.GetString("Rol") ?? "";
 
             if (rolLogueado != "ADMINISTRADOR" && usuarioLogueadoId != id)
@@ -106,14 +104,12 @@ namespace mvc.Controllers
                     ModelState.AddModelError("", "Las nuevas contraseñas no coinciden.");
                 }
 
-                // AQUÍ SE ENCRIPTA LA CONTRASEÑA NUEVA CON BCrypt
 #pragma warning disable CS8601
                 usuario.Password = BCrypt.Net.BCrypt.HashPassword(nuevaContraseña);
 #pragma warning restore CS8601
             }
             else
             {
-                // Si no se quiere cambiar, se mantiene la contraseña encriptada que ya tenía
                 usuario.Password = usuarioActual.Password;
             }
 
@@ -179,13 +175,64 @@ namespace mvc.Controllers
             {
                 return NotFound();
             }
-            
+
             if (!string.IsNullOrEmpty(usuario.Avatar))
             {
                 EliminarArchivoAvatar(usuario.Avatar);
             }
 
             _repositorio.Baja(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+        
+        [HttpGet]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
+        public IActionResult CrearUsuario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CrearUsuario(Usuario usuario, IFormFile? avatar)
+        {
+            if (!string.IsNullOrEmpty(usuario.Password))
+            {
+                usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(usuario);
+            }
+
+            if (avatar != null && avatar.Length > 0)
+            {
+                var nombreArchivo = Guid.NewGuid().ToString()
+                    + Path.GetExtension(avatar.FileName);
+
+                var carpeta = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads",
+                    "avatars"
+                );
+
+                Directory.CreateDirectory(carpeta);
+
+                var rutaCompleta = Path.Combine(carpeta, nombreArchivo);
+
+                using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+                {
+                    avatar.CopyTo(stream);
+                }
+
+                usuario.Avatar = "/uploads/avatars/" + nombreArchivo;
+            }
+
+            _repositorio.Alta(usuario);
 
             return RedirectToAction(nameof(Index));
         }

@@ -2837,3 +2837,34 @@ padding: 10px 12px;
 border-color: #9a7657;
 box-shadow: 0 0 0 0.15rem rgba(154, 118, 87, 0.15);
 }
+
+.management-page .data-card {
+    padding: 2rem;
+}
+
+.management-page .table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.management-page .table thead th {
+    background-color: #f5f1ec;
+    color: #5c4636;
+    font-weight: 600;
+    border-bottom: 2px solid #e5ddd5;
+    padding: 1rem;
+}
+
+.management-page .table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee7e0;
+}
+
+.management-page .table tbody tr:hover {
+    background-color: #faf8f6;
+}
+
+.management-page .badge {
+    font-weight: 500;
+    padding: 0.5rem 0.7rem;
+}

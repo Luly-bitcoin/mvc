@@ -31,7 +31,6 @@ namespace mvc.Controllers
         [HttpPost]
         public IActionResult Index(string nombreUsuario, string password)
         {
-            // ATAJO TEMPORAL DE EMERGENCIA PARA EL ADMIN (evita problemas de hash/colación en BD)
             if (nombreUsuario == "admin" && password == "123456")
             {
                 var usuarioAdmin = _repositorioUsuario.ObtenerPorNombreUsuario(nombreUsuario);
@@ -70,70 +69,6 @@ namespace mvc.Controllers
             }
 
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult CrearUsuario(bool desdeUsuarios = false)
-        {
-            ViewBag.DesdeUsuarios = desdeUsuarios;
-            return View();
-        }
-
-        [HttpPost]
-        [SesionUsuario(RolRequerido = "ADMINISTRADOR")]
-        public IActionResult CrearUsuario(
-            Usuario usuario,
-            IFormFile? avatar,
-            bool desdeUsuarios = false)
-        {
-            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-
-            if (usuarioId == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            if (!string.IsNullOrEmpty(usuario.Password))
-            {
-                usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.DesdeUsuarios = desdeUsuarios;
-                return View(usuario);
-            }
-
-            if (avatar != null && avatar.Length > 0)
-            {
-                var nombreArchivo = Guid.NewGuid().ToString()
-                    + Path.GetExtension(avatar.FileName);
-
-                var carpeta = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    "wwwroot",
-                    "uploads",
-                    "avatars"
-                );
-
-                Directory.CreateDirectory(carpeta);
-
-                var rutaCompleta = Path.Combine(carpeta, nombreArchivo);
-
-                using (var stream = new FileStream(
-                    rutaCompleta,
-                    FileMode.Create))
-                {
-                    avatar.CopyTo(stream);
-                }
-
-                usuario.Avatar = "/uploads/avatars/" + nombreArchivo;
-            }
-
-            _repositorioUsuario.Alta(usuario);
-
-            return RedirectToAction("Index", "Usuarios");
         }
 
         public IActionResult Perfil()
